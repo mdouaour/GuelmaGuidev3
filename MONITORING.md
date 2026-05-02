@@ -1,28 +1,37 @@
-# 📊 Product Monitoring & Health Strategy
+# 📊 Monitoring & Production Observability
 
-We prioritize "Zero-Cost Observability" using tools that provide generous free tiers for growing community platforms.
+Professional-grade monitoring strategy for GuelmaGuide.
 
-## 1. Error Tracking (Sentry)
-The platform is pre-configured with `@sentry/nextjs` and Python Sentry SDK.
-*   **Frontend**: Tracks hydration errors and slow API calls.
-*   **Backend**: Tracks DB connection timeouts and logic crashes.
-*   **Trigger**: Alerts are sent to the admin email when 5+ users experience the same error.
+## 📡 1. Real-time Health Monitoring
 
-## 2. Infrastructure Health (Railway)
-*   **Endpoint**: `/health`.
-*   **Checks**: 
-    - Database connectivity.
-    - Redis connectivity.
-    - arq task queue status.
-*   **Logging**: Use `BACKEND_LOG_LEVEL=info` in production. Avoid `debug` in prod to save storage space.
+We use the central `/health` endpoint for automated uptime monitoring.
 
-## 3. SEO & Traffic
-*   **Google Search Console**: Monitor how Guelma landmarks rank in regional searches.
-*   **Vercel Analytics**: Track Core Web Vitals (LCP, FID) to ensure the experience is fast on low-bandwidth mobile networks (Algerie Telecom/4G).
+*   **URL**: `https://api.guelma.guide/health`
+*   **Tool Choice**: Better Stack Uptime or UptimeRobot (Free tiers).
+*   **Heartbeat**: Configure a 1-minute check interval.
+*   **Alerting**: Instant notification via Slack/Discord if the status changes from `ok`.
 
-## 4. AI Budget Monitoring
-*   **Limiting**: The `RATE_LIMIT_AI_PER_WINDOW` env variable prevents automated scraping of the AI Guide which could exhaust your Gemini API credits.
-*   **Logging**: All AI responses are logged (without PII) to audit for hallucinations or inappropriate suggestions.
+## 🚨 2. Error Tracking (Sentry)
 
-## 5. Security Audits
-*   **JWT Revocation**: If a security breach occurs, change the `JWT_SECRET_KEY` in the environment variables and redeploy. This will instantly log out all active sessions globally.
+Sentry is integrated into both Frontend and Backend to catch silent failures.
+
+*   **Frontend**: Tracks hydration mismatches, API timeouts, and JS crashes.
+*   **Backend**: Tracks DB deadlock errors, 500 crashes, and AI API failures.
+*   **Usage**: Access the Sentry Dashboard for your GuelmaGuide project to see stack traces.
+
+## 📝 3. Logging Strategy
+
+*   **Standard Logs**: Handled by Railway (stdout/stderr).
+*   **Audit Trail**: Important actions (approvals, payments) are logged with user context.
+*   **Log Retention**: Logs are kept for 7 days on the free tier. For enterprise persistence, consider a Logflare instance.
+
+## 📈 4. Performance & Core Web Vitals
+
+*   **Google Search Console**: Monitor indexing of new places.
+*   **Vercel Analytics**: Check LCP (Largest Contentful Paint) for users in different regions of Algeria.
+*   **Database optimization**: Keep an eye on slow queries in the Railway Postgres dashboard - index fields like `category` and `theme` in the `places` table.
+
+## 💳 5. Financial Monitoring
+
+*   **Stripe Dashboard**: Monitor subscription growth and recurring revenue (MRR).
+*   **AI Budget**: Check Google AI Studio usage regularly to stay within the free tier or budget limits.

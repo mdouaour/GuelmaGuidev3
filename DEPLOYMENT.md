@@ -1,87 +1,94 @@
-# 🚀 Digitalizing Calama: Production Deployment Guide
+# 🚀 Enterprise Deployment Guide: Production & Staging
 
-This guide describes how to deploy the GuelmaGuide platform from scratch using a professional, automated CI/CD pipeline.
+This document outlines the professional deployment strategy for GuelmaGuide, ensuring zero-risk live updates and reliable infrastructure.
 
-## 🏁 Prerequisites
+## 🏗 Infrastructure Overview
 
-1.  **Accounts**:
-    *   **GitHub**: For source control and CI/CD actions.
-    *   **Vercel**: For Frontend hosting.
-    *   **Railway**: For Backend and PostgreSQL hosting.
-    *   **Cloudflare**: For DNS and R2 storage.
-    *   **Stripe**: For marketplace payments.
-    *   **Google Cloud**: For AI (Gemini) and Search/Maps.
-
-## 📦 Service Architecture
-
-```mermaid
-graph TD
-    User([User])
-    Vercel[Next.js - Vercel]
-    Railway[FastAPI - Railway]
-    Postgres[(PostgreSQL)]
-    Redis[(Redis + arq)]
-    Gemini[Gemini AI]
-    R2[Cloudflare R2]
-
-    User <--> Vercel
-    Vercel <--> Railway
-    Railway <--> Postgres
-    Railway <--> Redis
-    Railway <--> R2
-    Vercel <--> Gemini
-```
+*   **Frontend**: Next.js 15 on **Vercel** (Global CDN + Edge Runtime).
+*   **Backend**: FastAPI on **Railway** (Container host with internal networking).
+*   **Primary DB**: PostgreSQL (Managed).
+*   **Caching**: Redis (Managed).
+*   **Object Storage**: Cloudflare R2 (S3-compatible).
+*   **CI/CD**: GitHub Actions (Staging & Production branches).
 
 ---
 
-## 🛠 Step 1: Database & Cache (Railway)
+## 🛠 Step 1: Infrastructure Provisioning
 
-1.  Create a new project on **Railway**.
-2.  Provision a **PostgreSQL** instance.
-3.  Provision a **Redis** instance.
-4.  Copy the `DATABASE_URL` and `REDIS_URL`.
-5.  In the `backend` folder locally, run: `alembic upgrade head` (ensure your env is connected).
+Follow this specific order to avoid dependency failures:
 
-## 🛠 Step 2: Backend (Railway)
-
-1.  Connect your GitHub repo to Railway.
-2.  Add the `/backend` directory as a service.
-3.  Configure **Environment Variables** (see `ENVIRONMENT.md`).
-4.  Railway will detect the `Procfile` and start the web worker.
-
-## 🛠 Step 3: Frontend (Vercel)
-
-1.  Import your GitHub repo into **Vercel**.
-2.  Select the root directory.
-3.  Configure **Environment Variables**.
-4.  The `vercel.json` will handle the `/api/v1` proxying to the Railway backend.
-
-## 🛠 Step 4: CI/CD Automation (GitHub Actions)
-
-To enable `git push` deployments, you must add these secrets to your GitHub Repository (**Settings > Secrets and variables > Actions**):
-
-| Secret Name | Source | Use Case |
-| :--- | :--- | :--- |
-| `RAILWAY_TOKEN` | Railway Dashboard | Auth for backend deploy |
-| `VERCEL_TOKEN` | Vercel Settings | Auth for frontend deploy |
-| `VERCEL_ORG_ID` | Vercel Project | Scoping the command |
-| `VERCEL_PROJECT_ID` | Vercel Project | Scoping the command |
-
-Once added, every push to `main` will trigger `.github/workflows/deploy.yml`.
+1.  **Cloudflare**: Set up a site for your domain. Register for **R2 Storage** and create a bucket.
+2.  **Railway**: Create a new project. 
+    *   Provision **PostgreSQL**.
+    *   Provision **Redis**.
+3.  **Google Cloud Console**: Prepare your **OAuth 2.0 Credentials**.
+    *   Add `https://api.guelma.guide/api/v1/auth/google/callback` to Authorized Redirect URIs.
+4.  **Stripe**: Set up a product and price for the "Pro Subscription".
+5.  **Google AI Studio**: Generate a Gemini API key.
 
 ---
 
-## 🔍 Verification Checklist
+## 🔑 Step 2: Environment Configuration
 
-1.  [ ] **Health Check**: Visit `https://api.guelma.guide/health`. Expected: `{"status": "ok"}`.
-2.  [ ] **i18n Support**: Visit `/ar` and `/fr`. Ensure layouts flip correctly.
-3.  [ ] **AI Guide**: Ask for "Thermal baths near Guelma". Verify Gemini responds.
-4.  [ ] **Auth Popups**: Ensure Google Login works on the production domain.
-5.  [ ] **Image Persistence**: Upload a place image. Verify it's visible after a page refresh (Check R2).
+Copy `.env.example` as a reference. You must configure these variables in the dashboards:
 
-## 🆘 Debugging
+### Backend (Railway Dashboard)
+| Key | Value Source |
+| :--- | :--- |
+| `DATABASE_URL` | Copied from Railway Postgres plugin |
+| `REDIS_URL` | Copied from Railway Redis plugin |
+| `JWT_SECRET_KEY` | Generate with `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID` | Google Cloud Console |
+| `GOOGLE_CLIENT_SECRET` | Google Cloud Console |
+| `AI_API_KEY` | Google AI Studio |
+| `R2_*` | Cloudflare R2 settings |
 
-*   **401 Unauthorized**: Check if `JWT_SECRET_KEY` is identical on both Vercel and Railway.
-*   **CORS Issues**: Ensure your Vercel URL is explicitly listed in `BACKEND_CORS_ORIGINS`.
-*   **Failed Build**: Check Vercel logs for missing `npm` dependencies.
-*   **DB Connection Error**: Ensure the Railway instance allows connections from the backend IP (usually automatic).
+### Frontend (Vercel Dashboard)
+| Key | Value Source |
+| :--- | :--- |
+| `NEXT_PUBLIC_APP_URL` | Your production frontend URL |
+| `NEXT_PUBLIC_API_BASE_URL` | Your production backend URL |
+| `JWT_SECRET_KEY` | **MUST MATCH BACKEND KEY** |
+
+---
+
+## ⚙️ Step 3: CI/CD Automation (GitHub Actions)
+
+We use a two-tier deployment system:
+
+### Staging (Branch `staging` or PRs)
+*   **Trigger**: Push to `staging` branch or any Pull Request.
+*   **Result**: Vercel Preview Deployment & Staging Backend service update.
+
+### Production (Branch `main`)
+*   **Trigger**: Push or Merge to `main`.
+*   **Result**: Live Production update on `guelma.guide`.
+
+### 🔐 Required GitHub Secrets:
+Add these in **Settings > Secrets and variables > Actions**:
+1.  `VERCEL_TOKEN`: Your Vercel account token.
+2.  `VERCEL_ORG_ID`: From Vercel Project.
+3.  `VERCEL_PROJECT_ID`: From Vercel Project.
+4.  `RAILWAY_TOKEN`: From Railway Account Settings.
+
+---
+
+## 🧪 Step 4: Post-Deployment Verification
+
+After the pipeline completes, verify these endpoints:
+
+1.  **Health Check**: `https://api.guelma.guide/health`
+    *   Should return `status: ok` and confirm `database` and `redis` connections.
+2.  **Auth Flow**: Login with Google. Ensure cookies are set as `HttpOnly` and `Secure`.
+3.  **AI Guide**: Use the Discover page to ask a location-based question.
+4.  **Image Upload**: Suggest a new place with an image. Verify it appears on the map.
+
+---
+
+## 🔁 Step 5: Rollback Strategy
+
+The system is designed for instant recovery:
+
+*   **Vercel**: If the frontend breaks, find the last successful deployment in the Vercel dashboard and click **Promote to Production**.
+*   **Railway**: Use the **Rollback** button in the service dashboard to revert to the previous container image.
+*   **CI/CD**: If a health check fails during deployment, the GitHub Action will stop, preventing a broken version from reaching global users.

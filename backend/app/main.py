@@ -1,3 +1,4 @@
+from typing import Any
 import sentry_sdk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -59,9 +60,45 @@ if settings.BACKEND_CORS_ORIGINS:
     )
 
 
+from sqlalchemy import text
+from app.db.session import engine
+
 @app.get("/health", tags=["health"])
-def health_check() -> dict[str, str]:
-    return {"status": "ok"}
+async def health_check() -> dict[str, Any]:
+    health_status: dict[str, Any] = {
+        "status": "ok",
+        "version": settings.PROJECT_VERSION,
+        "environment": settings.APP_ENV,
+        "services": {
+            "database": "unknown",
+            "redis": "unknown"
+        }
+    }
+    
+    # Check Database
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        health_status["services"]["database"] = "connected"
+    except Exception as e:
+        health_status["status"] = "error"
+        health_status["services"]["database"] = f"error: {str(e)}"
+        
+    # Check Redis
+    if settings.REDIS_URL:
+        try:
+            if app.state.arq_pool:
+                await app.state.arq_pool.ping()
+                health_status["services"]["redis"] = "connected"
+            else:
+                health_status["services"]["redis"] = "not_initialized"
+        except Exception as e:
+            health_status["status"] = "error"
+            health_status["services"]["redis"] = f"error: {str(e)}"
+    else:
+        health_status["services"]["redis"] = "disabled"
+        
+    return health_status
 
 
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
