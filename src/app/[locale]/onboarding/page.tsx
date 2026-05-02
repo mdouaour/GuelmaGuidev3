@@ -106,6 +106,7 @@ export default function OnboardingPage() {
       id: 'user-location',
       title: locationPermission === 'granted' ? 'You' : 'Guelma Center',
       coordinates: userLocation,
+      category: 'other'
     }
   ], [userLocation, locationPermission])
 
@@ -245,7 +246,7 @@ export default function OnboardingPage() {
                 </div>
 
                 <div className="relative h-64 w-full overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-100">
-                  <LeafletMap markers={markers as any} zoom={13} />
+                  <LeafletMap markers={markers} zoom={13} />
                   <div className="absolute top-4 right-4 z-[1000]">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-emerald-600 shadow-lg">
                       <MapPin size={20} />

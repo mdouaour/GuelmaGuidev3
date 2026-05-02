@@ -9,14 +9,17 @@ export default function OnboardingGuard({ children }: { children: React.ReactNod
   const [shouldRender, setShouldRender] = useState(false)
 
   useEffect(() => {
-    const isComplete = localStorage.getItem('onboarding_complete') === 'true'
-    const isOnboardingPage = pathname.includes('/onboarding')
+    const checkOnboarding = () => {
+      const isComplete = localStorage.getItem('onboarding_complete') === 'true'
+      const isOnboardingPage = pathname.includes('/onboarding')
 
-    if (!isComplete && !isOnboardingPage) {
-      router.replace('/onboarding')
-    } else {
-      setShouldRender(true)
+      if (!isComplete && !isOnboardingPage) {
+        router.replace('/onboarding')
+      } else {
+        setShouldRender(true)
+      }
     }
+    checkOnboarding()
   }, [pathname, router])
 
   if (!shouldRender) {

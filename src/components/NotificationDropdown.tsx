@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Bell, Check, Trash2, Info, AlertCircle, CheckCircle, Clock } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useTranslations } from 'next-intl'
@@ -27,7 +27,7 @@ export default function NotificationDropdown({ locale }: { locale: string }) {
 
   const dateLocale = locale === 'ar' ? arDZ : locale === 'fr' ? fr : enUS
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (!user) return
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/`, {
@@ -43,15 +43,21 @@ export default function NotificationDropdown({ locale }: { locale: string }) {
     } catch (error) {
       console.error('Failed to fetch notifications:', error)
     }
-  }
+  }, [user])
 
   useEffect(() => {
+    const initNotifications = async () => {
+      if (user) {
+        await fetchNotifications()
+      }
+    }
+    initNotifications()
+    
     if (user) {
-      fetchNotifications()
       const interval = setInterval(fetchNotifications, 60000) // Poll every 60s
       return () => clearInterval(interval)
     }
-  }, [user])
+  }, [user, fetchNotifications])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

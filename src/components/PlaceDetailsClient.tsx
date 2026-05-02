@@ -52,7 +52,7 @@ export default function PlaceDetailsClient({ initialPlace, initialActivities }: 
     const saved = localStorage.getItem('recently_viewed_places')
     let places = saved ? JSON.parse(saved) : []
     // Remove if exists
-    places = places.filter((p: any) => p.id !== initialPlace.id)
+    places = places.filter((p: Place) => p.id !== initialPlace.id)
     // Add to start
     places.unshift(initialPlace)
     // Keep 10

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react'
 
 export default function PWAPrompt() {
   const [showPrompt, setShowPrompt] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function PWAPrompt() {
 
     if (isDismissed) return
 
-    const handleBeforeInstallPrompt = (e: any) => {
+    const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault()
       setDeferredPrompt(e)
       

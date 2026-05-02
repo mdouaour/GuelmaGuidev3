@@ -4,19 +4,23 @@ import { useEffect, useState } from 'react'
 import { WifiOff, MapPin, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import FadeInSection from '@/components/FadeInSection'
+import { type Place } from '@/lib/api'
 
 export default function OfflinePage() {
-  const [cachedPlaces, setCachedPlaces] = useState<any[]>([])
+  const [cachedPlaces, setCachedPlaces] = useState<Place[]>([])
 
   useEffect(() => {
-    const saved = localStorage.getItem('recently_viewed_places')
-    if (saved) {
-      try {
-        setCachedPlaces(JSON.parse(saved).slice(0, 5))
-      } catch (e) {
-        console.error(e)
+    const initOffline = () => {
+      const saved = localStorage.getItem('recently_viewed_places')
+      if (saved) {
+        try {
+          setCachedPlaces(JSON.parse(saved).slice(0, 5))
+        } catch (e) {
+          console.error(e)
+        }
       }
     }
+    initOffline()
   }, [])
 
   return (
@@ -25,9 +29,9 @@ export default function OfflinePage() {
         <div className="mb-6 rounded-full bg-slate-100 p-8 text-slate-400">
           <WifiOff size={64} />
         </div>
-        <h1 className="text-3xl font-black text-slate-900">You're Offline</h1>
+        <h1 className="text-3xl font-black text-slate-900">You&apos;re Offline</h1>
         <p className="mt-2 text-slate-500">
-          We couldn't connect to the internet, but here's what we have saved for you.
+          We couldn&apos;t connect to the internet, but here&apos;s what we have saved for you.
         </p>
 
         {cachedPlaces.length > 0 ? (

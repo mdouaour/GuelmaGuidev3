@@ -160,16 +160,16 @@ export default function AIPage() {
       const result = JSON.parse(rawJson);
       
       // Transform into data format
-      const recPlaces = result.place_ids.map((item: any) => {
+      const recPlaces = result.place_ids.map((item: { id: number; explanation: string }) => {
         const p = placesContext.find(pc => pc.id === item.id)
         if (!p) return null
         return { ...p, score: 1, distance_km: 0 } // mock score/distance for UI consistency
       }).filter(Boolean)
 
-      const recActivities = result.activity_ids.map((item: any) => {
+      const recActivities = result.activity_ids.map((item: { id: number; explanation: string }) => {
         const a = activitiesContext.find(ac => ac.id === item.id)
         if (!a) return null
-        return { ...a, score: 1, distance_km: 0, available_slots: a.max_participants - a.participants_count, is_joined: false, place_category: 'culture' }
+        return { ...a, score: 1, distance_km: 0, available_slots: a.max_participants - (a.participants_count || 0), is_joined: false, place_category: 'culture' }
       }).filter(Boolean)
 
       setData({
@@ -179,8 +179,8 @@ export default function AIPage() {
 
       // Map explanations
       const explMap: Record<string, string> = {}
-      result.place_ids.forEach((i: any) => explMap[`place-${i.id}`] = i.explanation)
-      result.activity_ids.forEach((i: any) => explMap[`activity-${i.id}`] = i.explanation)
+      result.place_ids.forEach((i: { id: number; explanation: string }) => explMap[`place-${i.id}`] = i.explanation)
+      result.activity_ids.forEach((i: { id: number; explanation: string }) => explMap[`activity-${i.id}`] = i.explanation)
       setExplanations(explMap)
 
     } catch (err) {

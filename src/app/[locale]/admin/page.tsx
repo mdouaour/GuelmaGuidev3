@@ -138,13 +138,18 @@ export default function AdminPage() {
   }, [user, isAuthLoading, router])
 
   useEffect(() => {
-    if (user?.role === 'admin') {
-      fetchStats()
-      fetchPendingActivities()
-      fetchPendingPlaces()
-      fetchUsers()
-      fetchPlaces()
+    const init = async () => {
+      if (user?.role === 'admin') {
+        await Promise.all([
+          fetchStats(),
+          fetchPendingActivities(),
+          fetchPendingPlaces(),
+          fetchUsers(),
+          fetchPlaces()
+        ])
+      }
     }
+    init()
   }, [user])
 
   const handleApprove = async (id: number) => {

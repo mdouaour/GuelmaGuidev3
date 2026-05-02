@@ -31,8 +31,8 @@ export default function ImageUpload({ place, onUpdate }: ImageUploadProps) {
       const updatedPlace = await uploadPlaceImage(place.id, file)
       onUpdate(updatedPlace)
       if (fileInputRef.current) fileInputRef.current.value = ''
-    } catch (err: any) {
-      setError(err.message || 'Upload failed')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Upload failed')
     } finally {
       setIsUploading(false)
     }
@@ -43,8 +43,8 @@ export default function ImageUpload({ place, onUpdate }: ImageUploadProps) {
     try {
       const updatedPlace = await deletePlaceImage(place.id, imageUrl)
       onUpdate(updatedPlace)
-    } catch (err: any) {
-      setError(err.message || 'Delete failed')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Delete failed')
     } finally {
       setIsDeleting(null)
     }
