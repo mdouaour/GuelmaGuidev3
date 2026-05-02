@@ -1,67 +1,87 @@
-# 🚀 Deployment Guide: Production & Scalability
+# 🚀 Complete Deployment Guide: Step-by-Step
 
-This document provides the **CRITICAL** steps to take the Guelma platform from development to a professional production environment (Vercel, Railway, Cloud Run).
+This guide walks you through the entire process of deploying GuelmaGuide to a production environment.
 
-## 1. Prerequisites
-- **GitHub Account**: To host your source code.
-- **Vercel/Railway Account**: Or any cloud provider supporting Node.js.
-- **PostgreSQL Database**: A managed instance (e.g., Neon or Railway DB).
-- **Gemini API Key**: From [Google AI Studio](https://aistudio.google.com/).
+## 1. Database & Infrastructure
 
----
+### 🗄 PostgreSQL (Relational Data)
+We recommend **Railway** or **Neon**.
+1. Create a PostgreSQL instance.
+2. Copy the `DATABASE_URL`.
+3. In your backend terminal, run migrations: `cd backend && alembic upgrade head`.
 
-## 2. Environment Configuration (FULL LIST)
-You must set these variables in your deployment dashboard (e.g., Vercel Project Settings).
-
-| Variable | Required | Example | Description |
-| :--- | :--- | :--- | :--- |
-| `NEXT_PUBLIC_APP_URL` | Yes | `https://guelma.guide` | Public URL of your site. |
-| `API_BASE_URL` | Yes | `https://api.guelma.guide/api/v1` | URL of the Python backend. |
-| `DATABASE_URL` | Yes | `postgresql://...` | Connection string for Postgres. |
-| `JWT_SECRET_KEY` | Yes | `random_32_char_string` | Used to sign your tokens. |
-| `NEXT_PUBLIC_GEMINI_API_KEY` | No | `AIzaSy...` | Enables client-side AI Guide. |
-| `SENTRY_DSN` | No | `https://...` | For real-time error tracking. |
+### ⚡ Redis (Caching & Rate Limiting)
+Required for high-performance data loading and security.
+1. Provision a Redis instance (Railway, Upstash, or Redis Cloud).
+2. Set the `REDIS_URL`.
 
 ---
 
-## 3. Deployment Steps
+## 2. Third-Party Service Setup
 
-### Step A: Database & Backend
-1. **Provision Database**: Create a new PostgreSQL instance on Railway.
-2. **Apply Migrations**: 
-   - Connect to the backend folder (`/backend`).
-   - Run `alembic upgrade head`.
-3. **Deploy Backend**: 
-   - Point your hosting provider to the `/backend` directory.
-   - Ensure the `API_BASE_URL` matches where this is hosted.
+### ☁️ Cloudflare R2 (Image Storage)
+1. Log in to Cloudflare > R2 > Create Bucket.
+2. In Bucket Settings, enable "Public Access via Managed Subdomain" or link a custom domain.
+3. In **My Profile > API Tokens**, create a token with `R2 Read/Write` permissions.
+4. Copy `Account ID`, `Access Key ID`, and `Secret Access Key`.
 
-### Step B: Frontend (Next.js)
-1. **Import Project**: Link your GitHub repository to Vercel.
-2. **Framework Preset**: Ensure "Next.js" is selected.
-3. **Environment Variables**: Paste all variables from section 2 into the Vercel "Environment Variables" tab.
-4. **Build & Deploy**: Click Deploy!
+### 🤖 Google AI Studio (AI Guide)
+1. Go to [AI Studio](https://aistudio.google.com/).
+2. Create an API Key.
+3. Set `NEXT_PUBLIC_GEMINI_API_KEY` and `AI_API_KEY`.
 
----
+### 🔐 Google OAuth (Social Login)
+1. Go to [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new Project.
+3. In **APIs & Services > OAuth consent screen**, configure your app.
+4. In **Credentials**, create an "OAuth 2.0 Client ID".
+   - **Authorized JavaScript origins**: `https://guelma.guide`
+   - **Authorized redirect URIs**: `https://api.guelma.guide/api/v1/auth/google/callback`
+5. Copy `Client ID` and `Client Secret`.
 
-## 4. Verification & Testing
-Once deployed, perform these checks:
-1. **i18n Check**: Visit `/ar` and `/en` to ensure translations load.
-2. **Auth Check**: Attempt to Register and Login. Verify you receive the session cookie.
-3. **AI Guide**: Ask the AI Guide for a "Historical tour of Guelma". It should respond using your Gemini Key.
-4. **Map Check**: Ensure the map renders and you can click on landmarks.
-
----
-
-## 5. Common Errors & Fixes
-- **401 Unauthorized**: Ensure `JWT_SECRET_KEY` matches exactly on both Frontend and Backend.
-- **CORS Error**: Update `BACKEND_CORS_ORIGINS` in your backend variables to include your Vercel domain.
-- **Map Not Loading**: Check if `NEXT_PUBLIC_API_BASE_URL` is correct and accessible.
+### 💳 Stripe (Pro Subscriptions)
+1. Go to [Stripe Dashboard](https://dashboard.stripe.com/).
+2. Create a **Subscription Product** for "Pro Organizers".
+3. Copy the **Price ID**.
+4. Set `STRIPE_SECRET_KEY` and `STRIPE_PRO_PRICE_ID`.
 
 ---
 
-## 6. How it Scrapes: Scaling to Other Cities
-To scale to Annaba or Constantine:
-1. **Update Data**: Add new entries to the `places` table with their city tags.
-2. **Multitenancy**: The frontend will automatically show them if you filter by city in the API request.
-3. **SEO**: Update `src/app/sitemap.ts` to include city-specific paths.
+## 3. Deploying the Backend (FastAPI)
+
+1. Set the deployment directory to `/backend`.
+2. Configure **Environment Variables** (see `ENVIRONMENT.md`).
+3. **Build Command**: `pip install -r requirements.txt`.
+4. **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
+
+---
+
+## 4. Deploying the Frontend (Next.js)
+
+1. Link your GitHub Repo to **Vercel**.
+2. Configure **Environment Variables**.
+3. **Build Command**: `npm run build`.
+4. **Install Command**: `npm install`.
+
+---
+
+## 5. Verification Checklist
+
+- [ ] **Home Page**: Visit `https://guelma.guide`. Does the hero section load?
+- [ ] **i18n**: Toggle between Arabic and English.
+- [ ] **Map**: Open the Discover page. Do the markers appear after ~1s?
+- [ ] **Auth**: Login with Google. Does your profile avatar appear?
+- [ ] **AI**: Ask the AI Guide "What happened in the Roman Theater?".
+- [ ] **Upload**: Try to suggest a place with an image. Does it upload to R2?
+
+---
+
+## 🛠 Common Production Issues
+
+| Issue | Potential Cause | Fix |
+| :--- | :--- | :--- |
+| **500 Internal Error** | Missing `DATABASE_URL` or failed migration. | Run `alembic upgrade head`. |
+| **403 Forbidden** | `BACKEND_CORS_ORIGINS` mismatch. | Add your frontend URL to the list. |
+| **Empty Map** | `NEXT_PUBLIC_API_BASE_URL` is blocked by browser. | Ensure it is an HTTPS link. |
+| **Login Loop** | `JWT_SECRET_KEY` differs between services. | Sync the keys in all dashboards. |
 
