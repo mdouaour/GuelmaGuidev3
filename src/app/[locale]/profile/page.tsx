@@ -86,6 +86,9 @@ export default function ProfilePage() {
                   <ShieldCheck size={12} /> Verified
                 </span>
               )}
+              <span className="flex items-center gap-1 rounded-full bg-amber-50 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-amber-700 border border-amber-100">
+                <BarChart3 size={12} /> {user.points} Points
+              </span>
             </div>
           </div>
         </div>

@@ -88,11 +88,13 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<Tab>('pending')
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [pendingActivities, setPendingActivities] = useState<PendingActivity[]>([])
+  const [pendingPlaces, setPendingPlaces] = useState<Place[]>([])
   const [users, setUsers] = useState<AdminUser[]>([])
   const [places, setPlaces] = useState<Place[]>([])
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [rejectionReasons, setRejectionReasons] = useState<Record<number, string>>({})
+  const [placeRejectionReasons, setPlaceRejectionReasons] = useState<Record<number, string>>({})
 
   const fetchStats = async () => {
     try {
@@ -108,6 +110,13 @@ export default function AdminPage() {
     } catch (e) { console.error(e) }
   }
 
+  const fetchPendingPlaces = async () => {
+    try {
+      const data = await localFetch('/api/admin/places?status=pending')
+      setPendingPlaces(data.results || [])
+    } catch (e) { console.error(e) }
+  }
+
   const fetchUsers = async () => {
     try {
       const data = await localFetch('/api/admin/users')
@@ -117,7 +126,7 @@ export default function AdminPage() {
 
   const fetchPlaces = async () => {
     try {
-      const data = await getPlaces(new URLSearchParams({ limit: '100' }))
+      const data = await getPlaces(new URLSearchParams({ limit: '100', status: 'approved' }))
       setPlaces(data.results)
     } catch (e) { console.error(e) }
   }
@@ -132,6 +141,7 @@ export default function AdminPage() {
     if (user?.role === 'admin') {
       fetchStats()
       fetchPendingActivities()
+      fetchPendingPlaces()
       fetchUsers()
       fetchPlaces()
     }
@@ -155,6 +165,33 @@ export default function AdminPage() {
       })
       fetchPendingActivities()
       setRejectionReasons(prev => {
+         const next = { ...prev }
+         delete next[id]
+         return next
+      })
+    } catch (e) { console.error(e) }
+  }
+
+  const handleApprovePlace = async (id: number) => {
+    try {
+      await localFetch(`/api/admin/places/${id}/approve`, {
+        method: 'PATCH',
+      })
+      fetchPendingPlaces()
+      fetchPlaces()
+      fetchStats()
+    } catch (e) { console.error(e) }
+  }
+
+  const handleRejectPlace = async (id: number) => {
+    const reason = placeRejectionReasons[id]
+    try {
+      await localFetch(`/api/admin/places/${id}/reject`, {
+        method: 'PATCH',
+        body: JSON.stringify({ reason }),
+      })
+      fetchPendingPlaces()
+      setPlaceRejectionReasons(prev => {
          const next = { ...prev }
          delete next[id]
          return next
@@ -234,66 +271,126 @@ export default function AdminPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="space-y-4"
+                className="space-y-8"
               >
-                {pendingActivities.length === 0 ? (
-                  <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 text-center">
-                    <CheckCircle className="mx-auto mb-4 text-emerald-500" size={48} />
-                    <h3 className="text-xl font-bold text-slate-900">{t('activities.no_pending')}</h3>
-                  </div>
-                ) : (
-                  pendingActivities.map((activity) => (
-                    <div key={activity.id} className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-                      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                        <div className="space-y-1">
-                          <h3 className="text-xl font-bold text-slate-900">{activity.title}</h3>
-                          <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-500">
-                             <div className="flex items-center gap-1">
-                               <Users size={14} />
-                               <span>{activity.organizer_name}</span>
-                             </div>
-                             <div className="flex items-center gap-1">
-                               <FileText size={14} />
-                               <span>{activity.place_name}</span>
-                             </div>
-                             <div className="flex items-center gap-1">
-                               <BarChart3 size={14} />
-                               <span>{format(new Date(activity.date_time), 'PPP')}</span>
-                             </div>
+                {/* Activities Section */}
+                <div className="space-y-4">
+                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">Pending Activities</h2>
+                  {pendingActivities.length === 0 ? (
+                    <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 text-center">
+                      <p className="text-slate-500">No pending activities</p>
+                    </div>
+                  ) : (
+                    pendingActivities.map((activity) => (
+                      <div key={activity.id} className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                          <div className="space-y-1">
+                            <h3 className="text-xl font-bold text-slate-900">{activity.title}</h3>
+                            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-500">
+                               <div className="flex items-center gap-1">
+                                 <Users size={14} />
+                                 <span>{activity.organizer_name}</span>
+                               </div>
+                               <div className="flex items-center gap-1">
+                                 <FileText size={14} />
+                                 <span>{activity.place_name}</span>
+                               </div>
+                               <div className="flex items-center gap-1">
+                                 <BarChart3 size={14} />
+                                 <span>{format(new Date(activity.date_time), 'PPP')}</span>
+                               </div>
+                            </div>
                           </div>
-                        </div>
-                        
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                          <div className="flex-1">
-                            <input
-                              type="text"
-                              placeholder={t('activities.reason_placeholder')}
-                              value={rejectionReasons[activity.id] || ''}
-                              onChange={(e) => setRejectionReasons(prev => ({ ...prev, [activity.id]: e.target.value }))}
-                              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
-                            />
-                          </div>
-                          <div className="flex gap-2">
-                             <button
-                               onClick={() => handleReject(activity.id)}
-                               className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-100"
-                             >
-                               <XCircle size={18} />
-                               {t('activities.reject')}
-                             </button>
-                             <button
-                               onClick={() => handleApprove(activity.id)}
-                               className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-600 transition-colors hover:bg-emerald-100"
-                             >
-                               <CheckCircle size={18} />
-                               {t('activities.approve')}
-                             </button>
+                          
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <div className="flex-1 min-w-[200px]">
+                              <input
+                                type="text"
+                                placeholder={t('activities.reason_placeholder')}
+                                value={rejectionReasons[activity.id] || ''}
+                                onChange={(e) => setRejectionReasons(prev => ({ ...prev, [activity.id]: e.target.value }))}
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:border-red-500 focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                               <button
+                                 onClick={() => handleReject(activity.id)}
+                                 className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-100"
+                               >
+                                 <XCircle size={18} />
+                               </button>
+                               <button
+                                 onClick={() => handleApprove(activity.id)}
+                                 className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-600 transition-colors hover:bg-emerald-100"
+                               >
+                                 <CheckCircle size={18} />
+                                 {t('activities.approve')}
+                               </button>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Places Section */}
+                <div className="space-y-4">
+                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">Pending Place Suggestions</h2>
+                  {pendingPlaces.length === 0 ? (
+                    <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 text-center">
+                      <p className="text-slate-500">No pending place suggestions</p>
                     </div>
-                  ))
-                )}
+                  ) : (
+                    pendingPlaces.map((place) => (
+                      <div key={place.id} className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                          <div className="space-y-1">
+                            <h3 className="text-xl font-bold text-slate-900">{place.name}</h3>
+                            <p className="text-sm text-slate-500 mb-2 line-clamp-2 max-w-lg">{place.description}</p>
+                            <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                               <div className="flex items-center gap-1">
+                                 <MapPin size={12} />
+                                 <span>{place.category} · {place.theme}</span>
+                               </div>
+                               <div className="flex items-center gap-1">
+                                 <Users size={12} />
+                                 <span>By: {place.suggested_by_name || 'Visitor'}</span>
+                               </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <div className="flex-1 min-w-[200px]">
+                              <input
+                                type="text"
+                                placeholder="Rejection reason..."
+                                value={placeRejectionReasons[place.id] || ''}
+                                onChange={(e) => setPlaceRejectionReasons(prev => ({ ...prev, [place.id]: e.target.value }))}
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:border-red-500 focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                               <button
+                                 onClick={() => handleRejectPlace(place.id)}
+                                 className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-100"
+                               >
+                                 <XCircle size={18} />
+                               </button>
+                               <button
+                                 onClick={() => handleApprovePlace(place.id)}
+                                 className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-600 transition-colors hover:bg-emerald-100"
+                               >
+                                 <CheckCircle size={18} />
+                                 Approve
+                               </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </motion.div>
             )}
 

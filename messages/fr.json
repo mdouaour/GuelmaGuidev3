@@ -5,7 +5,15 @@
     "wishlist": "Favoris",
     "ai_guide": "Guide IA",
     "home": "Accueil",
-    "profile": "Profil"
+    "profile": "Profil",
+    "community": "Communauté"
+  },
+  "community": {
+    "title": "Communauté de Guelma",
+    "leaderboard": "Top Contributeurs",
+    "feedback_title": "Contacter l'équipe d'évolution",
+    "feedback_success": "Message reçu ! Merci.",
+    "points": "Pts"
   },
   "home": {
     "welcome": "Bienvenue à Guelma",

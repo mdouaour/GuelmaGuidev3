@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Roman Theater (Calama)",
+    "description": "One of the most beautiful and well-preserved Roman theaters in North Africa, built during the 2nd century AD. It marks the ancient heritage of Calama.",
+    "latitude": 36.4678,
+    "longitude": 7.4289,
+    "category": "culture",
+    "theme": "Roman Antiquity"
+  },
+  {
+    "name": "Hammam Debagh (Meskhoutine)",
+    "description": "Famous for its natural limestone waterfall and thermal waters that reach boiling temperatures. Known as one of the hottest springs in the world.",
+    "latitude": 36.4583,
+    "longitude": 7.2750,
+    "category": "thermal_baths",
+    "theme": "Wellness & Nature"
+  },
+  {
+    "name": "Bouhamdane Dam",
+    "description": "A stunning reservoir surrounded by mountains, perfect for hiking, picnics, and observing local wildlife. A vital water source for the region.",
+    "latitude": 36.4714,
+    "longitude": 7.1528,
+    "category": "nature",
+    "theme": "Outdoors & Scenery"
+  },
+  {
+    "name": "Guelma Archeological Museum",
+    "description": "Located near the Roman theater, it houses a rich collection of statues, mosaics, and everyday objects from the Numidian and Roman eras.",
+    "latitude": 36.4682,
+    "longitude": 7.4301,
+    "category": "culture",
+    "theme": "History"
+  },
+  {
+    "name": "Ain Ben Beida Forest",
+    "description": "A lush forest area ideal for nature enthusiasts and mountain biking, offering fresh air and diverse Mediterranean flora.",
+    "latitude": 36.5000,
+    "longitude": 7.6000,
+    "category": "forest",
+    "theme": "Ecology & Sport"
+  },
+  {
+    "name": "El Hamma Roman Pool",
+    "description": "An ancient thermal bath site where Roman structures are still partially used today by locals, blending history with daily life.",
+    "latitude": 36.3500,
+    "longitude": 7.4000,
+    "category": "thermal_baths",
+    "theme": "Heritage"
+  }
+]

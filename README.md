@@ -1,117 +1,35 @@
-# GuelmaGuide MVP
+# GuelmaGuide 🌿
 
-Smart discovery platform for Guelma, Algeria.
+> **Hyper-local. Community-driven. AI-powered.**
 
-## Product scope
+GuelmaGuide is more than just a tourism directory. It is a living, breathing digital twin of Guelma, Algeria, built and maintained by the people who know it best: **You.**
 
-- Discover places (`/discover`)
-- Browse activities (`/activities`)
-- Use a lightweight deterministic AI guide (`/ai`)
-- View place details with map (`/place/[slug]`)
+## ✨ Why GuelmaGuide?
 
-## Tech
+- **Discover the Unseen**: Move beyond the famous Roman Theater. Find hidden springs, local craft workshops, and community nature trails suggested by locals.
+- **Join the Evolution**: The platform is built on a "Crowdsourced Wisdom" model. Every landmark you suggest and every activity you host evolves the site for everyone.
+- **Rewarding Contributions**: Our **Gamification Engine** awards `points` for every verified contribution. Rise through the ranks of the community.
+- **Smart Insights**: Get personalized itineraries from our AI Guide, trained on centuries of Guelma's history.
 
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS
-- React Leaflet + OpenStreetMap
+## 🛠 Features for Everyone
 
-## Local development
+- **For Visitors**: Interactive maps, AI-powered recommendations, and real-time activity bookings.
+- **For Contributors**: Suggest places, upload photos, and earn impact points.
+- **For Organizers**: Host hikes, cultural tours, and workshops. Access deep analytics on your impact.
+- **For Local Businesses**: Our **Partner Ads Space** provides a platform for Algerian businesses to reach a targeted audience of heritage enthusiasts.
 
-```bash
-cp .env.example .env.local
-npm install
-npm run dev
-```
+## 🚀 Quick Deployment
 
-Open http://localhost:3000.
+1.  **Configure Environment**: Set your `API_BASE_URL` and `NEXT_PUBLIC_GEMINI_API_KEY`.
+2.  **Seed Your Local Map**: Use `seed-data.json` to populate the core historical sites.
+3.  **Go Live**: Deploy seamlessly to Vercel or Cloud Run.
 
-## Backend (FastAPI)
+## 📖 Deeper Reading
 
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cd ..
-cp .env.example .env
-uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 8000 --reload
-```
+- [Architecture & Philosphy](./ARCHITECTURE.md): Why we built it this way.
+- [Deployment Roadmap](./DEPLOYMENT.md): Detailed steps for Vercel, Railway, and PostgreSQL.
+- [Monitoring](./MONITORING.md): How we keep the Guelma digital space safe.
 
-### Database migrations (Alembic)
+---
 
-```bash
-cd backend
-alembic upgrade head
-```
-
-Create a new migration when schema changes:
-
-```bash
-cd backend
-alembic revision --autogenerate -m "describe change"
-```
-
-### Seed demo data (places + activities)
-
-After migrations, seed tourism demo content:
-
-```bash
-cd backend
-python -m scripts.seed_demo_data
-```
-
-This script is idempotent and creates:
-
-- 16 places in Guelma (nature, culture, cafés, sports, thermal spots)
-- 16 upcoming activities (football, hiking, meetup, wellness, etc.)
-- 1 organizer account used as activity owner
-
-### Backend dependencies
-
-- PostgreSQL (required)
-- Redis (optional, enables caching and distributed rate limiting)
-
-## SEO
-
-Sitemap and robots are generated from the App Router metadata files:
-
-- `src/app/sitemap.ts`
-- `src/app/robots.ts`
-
-## Deployment
-
-### Backend (Render / Railway)
-
-1. Set environment variables from `.env.example` (`JWT_SECRET_KEY`, `DATABASE_URL`, optional `REDIS_URL`).
-2. Set `BACKEND_CORS_ORIGINS` with your frontend URLs (comma-separated), for example:
-   ```bash
-   BACKEND_CORS_ORIGINS=https://your-project.vercel.app,https://www.your-domain.com
-   ```
-3. Install dependencies with `pip install -r backend/requirements.txt`.
-4. Start command:
-   ```bash
-   uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT
-   ```
-5. Run migrations on deploy:
-   ```bash
-   cd backend && alembic upgrade head
-   ```
-
-### Frontend (Vercel)
-
-1. Import repository in Vercel.
-2. Set `NEXT_PUBLIC_API_BASE_URL` to your backend base URL (for example `https://api.example.com` or `https://api.example.com/api/v1`).
-3. Build command: `npm run build`
-4. Output: default Next.js output (no custom config required).
-
-## Real usage prep
-
-- Optional demo login shown on homepage:
-  - `NEXT_PUBLIC_DEMO_USER_EMAIL`
-  - `NEXT_PUBLIC_DEMO_USER_PASSWORD`
-- Prepare demo accounts by registering users through `/api/v1/auth/register`.
-- Prepare demo places/activities by creating organizer/admin users and using:
-  - `POST /api/v1/places`
-  - `POST /api/v1/activities`
+*GuelmaGuide is a project dedicated to the heritage of Algeria. If you are a local business interested in partnering, visit our [Community Space](/community).*

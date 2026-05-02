@@ -118,6 +118,7 @@ export interface AuthUser {
   email_verified: boolean
   organiser_pro: boolean
   pro_expires_at?: string
+  points: number
   created_at: string
   updated_at: string
 }
@@ -148,6 +149,19 @@ export interface Place {
   rating_avg: number
   rating_count: number
   is_saved: boolean
+  status: 'pending' | 'approved' | 'rejected'
+  suggested_by_id?: number
+  suggested_by_name?: string
+  rejection_reason?: string
+}
+
+export interface PlaceCreatePayload {
+  name: string
+  description: string
+  latitude: number
+  longitude: number
+  category: string
+  theme: string
 }
 
 function slugifyPlaceName(name: string) {
@@ -294,6 +308,13 @@ export function getPlace(placeId: number) {
   return apiRequest<Place>(`/places/${placeId}`)
 }
 
+export function createPlace(payload: PlaceCreatePayload) {
+  return localApiRequest<Place>('/api/places', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
 export function uploadPlaceImage(placeId: number, file: File) {
   const formData = new FormData()
   formData.append('file', file)
@@ -370,4 +391,43 @@ export interface OrganiserAnalytics {
 
 export function getOrganiserAnalytics() {
   return localApiRequest<OrganiserAnalytics[]>('/api/organiser/analytics')
+}
+
+export interface LeaderboardEntry {
+  id: number
+  name: string
+  points: number
+  role: string
+}
+
+export interface FeedbackPayload {
+  subject: string
+  message: string
+}
+
+export function getLeaderboard() {
+  return localApiRequest<LeaderboardEntry[]>('/api/community/leaderboard')
+}
+
+export function sendFeedback(payload: FeedbackPayload) {
+  return localApiRequest<{ success: boolean }>('/api/community/feedback', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+export function adminGetPendingPlaces() {
+  return localApiRequest<PaginatedResponse<Place>>('/api/admin/places?status=pending')
+}
+
+export function adminApprovePlace(placeId: number) {
+  return localApiRequest<Place>(`/api/admin/places/${placeId}/approve`, {
+    method: 'PATCH',
+  })
+}
+
+export function adminRejectPlace(placeId: number, reason: string) {
+  return localApiRequest<Place>(`/api/admin/places/${placeId}/reject`, {
+    method: 'PATCH',
+    body: JSON.stringify({ reason }),
+  })
 }

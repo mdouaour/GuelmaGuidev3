@@ -5,7 +5,15 @@
     "wishlist": "المفضلة",
     "ai_guide": "الدليل الذكي",
     "home": "الرئيسية",
-    "profile": "الملف الشخصي"
+    "profile": "الملف الشخصي",
+    "community": "المجتمع"
+  },
+  "community": {
+    "title": "مجتمع قالمة",
+    "leaderboard": "كبار المساهمين",
+    "feedback_title": "تواصل مع فريق التطوير",
+    "feedback_success": "تم استلام رسالتك! شكراً لك.",
+    "points": "نقطة"
   },
   "home": {
     "welcome": "مرحبا بك في قالمة",
@@ -34,7 +42,18 @@
     "page": "الصفحة",
     "total": "الإجمالي",
     "prev": "السابق",
-    "next": "التالي"
+    "next": "التالي",
+    "suggest_place": "اقترح مكاناً",
+    "suggest_desc": "هل تعرف جوهرة خفية في قالمة؟ اقترحها لمجتمعنا!",
+    "suggest_modal_title": "اقتراح معلم جديد",
+    "suggest_form_name": "اسم المعلم",
+    "suggest_form_desc": "أخبرنا عنه (تاريخ، مميزات...)",
+    "suggest_form_coordinates": "الإحداثيات (خط العرض، خط الطول)",
+    "suggest_form_category": "الفئة",
+    "suggest_form_theme": "الثيم",
+    "suggest_form_submit": "إرسال الاقتراح",
+    "suggest_success": "شكراً لك! تم إرسال اقتراحك للإدارة للمراجعة. ستحصل على نقاط بمجرد الموافقة!",
+    "suggest_login_required": "يجب عليك تسجيل الدخول لاقتراح مكان."
   },
   "footer": {
     "tagline": "دليل مدينة ذكي لقالمة، الجزائر."
@@ -130,6 +149,17 @@
     "text": "بريدك الإلكتروني غير موثق.",
     "link": "اذهب إلى إعدادات الحساب لإعادة الإرسال"
   },
+  "profile": {
+    "login_required": "تسجيل الدخول مطلوب",
+    "login_desc": "يرجى تسجيل الدخول لإدارة حسابك وعرض أنشطتك.",
+    "login_btn": "الذهاب لتسجيل الدخول",
+    "account_info": "معلومات الحساب",
+    "email": "البريد الإلكتروني",
+    "logout_btn": "تسجيل الخروج",
+    "logging_out": "جاري الخروج...",
+    "manage_activities": "إدارة الأنشطة",
+    "points": "نقاط المساهمة"
+  },
   "auth": {
     "login": "دخول",
     "logout": "خروج",
@@ -202,6 +232,7 @@
         "this_month": "جديد هذا الشهر"
     }
   },
+  "onboarding": {
     "step_language": "اختر لغتك",
     "step_interests": "ماذا تحب؟",
     "step_location": "أين أنت؟",

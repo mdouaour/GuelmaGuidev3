@@ -5,7 +5,15 @@
     "wishlist": "Wishlist",
     "ai_guide": "AI Guide",
     "home": "Home",
-    "profile": "Profile"
+    "profile": "Profile",
+    "community": "Community"
+  },
+  "community": {
+    "title": "Guelma Community",
+    "leaderboard": "Top Contributors",
+    "feedback_title": "Contact Evolution Team",
+    "feedback_success": "Message received! Thank you.",
+    "points": "Pts"
   },
   "home": {
     "welcome": "Welcome to Guelma",
@@ -34,7 +42,18 @@
     "page": "Page",
     "total": "Total",
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "suggest_place": "Suggest a Place",
+    "suggest_desc": "Know a hidden gem in Guelma? Suggest it to our community!",
+    "suggest_modal_title": "Suggest a New Landmark",
+    "suggest_form_name": "Landmark Name",
+    "suggest_form_desc": "Tell us about it (History, features...)",
+    "suggest_form_coordinates": "Coordinates (Lat, Lng)",
+    "suggest_form_category": "Category",
+    "suggest_form_theme": "Theme",
+    "suggest_form_submit": "Submit Suggestion",
+    "suggest_success": "Thank you! Your suggestion has been sent to admins for approval. You'll gain points once approved!",
+    "suggest_login_required": "You must be logged in to suggest a place."
   },
   "footer": {
     "tagline": "Smart city guide for Guelma, Algeria."
@@ -174,7 +193,8 @@
     "email": "Email Address",
     "logout_btn": "Sign Out",
     "logging_out": "Signing out...",
-    "manage_activities": "Activity Management"
+    "manage_activities": "Activity Management",
+    "points": "Contribution Points"
   },
   "auth": {
     "login": "Login",

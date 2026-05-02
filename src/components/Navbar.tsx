@@ -12,6 +12,7 @@ const links = [
   { href: '/wishlist', key: 'wishlist' },
   { href: '/activities', key: 'activities' },
   { href: '/ai', key: 'ai_guide' },
+  { href: '/community', key: 'community' },
 ]
 
 export default function Navbar() {

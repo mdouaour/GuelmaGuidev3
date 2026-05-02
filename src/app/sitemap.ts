@@ -1,20 +1,42 @@
 import { MetadataRoute } from 'next'
-import { landmarks } from '@/lib/landmarks'
+import { serverGetPlaces, serverGetActivities } from '@/lib/server-api'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://guelma.guide'
-  const now = new Date()
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const locales = ['en', 'ar', 'fr']
+  const publicUrl = 'https://guelma.guide'
 
-  return [
-    { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/discover`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/activities`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
-    { url: `${base}/ai`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
-    ...landmarks.map((landmark) => ({
-      url: `${base}/place/${landmark.slug}`,
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    })),
-  ]
+  // Static routes
+  const staticRoutes = ['', '/discover', '/activities']
+  const sitemapEntries: MetadataRoute.Sitemap = []
+
+  for (const locale of locales) {
+    for (const route of staticRoutes) {
+      sitemapEntries.push({
+        url: `${publicUrl}/${locale}${route}`,
+        lastModified: new Date(),
+        changeFrequency: route === '' ? 'daily' : 'weekly',
+        priority: route === '' ? 1 : 0.8,
+      })
+    }
+  }
+
+  // Dynamic Place routes
+  try {
+    const placesResponse = await serverGetPlaces(new URLSearchParams({ limit: '100' }))
+    for (const place of placesResponse.results) {
+      const slug = `${place.id}-${place.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`
+      for (const locale of locales) {
+        sitemapEntries.push({
+          url: `${publicUrl}/${locale}/place/${slug}`,
+          lastModified: new Date(place.updated_at || new Date()),
+          changeFrequency: 'monthly',
+          priority: 0.6,
+        })
+      }
+    }
+  } catch (error) {
+    console.error('Error generating place sitemap entries:', error)
+  }
+
+  return sitemapEntries
 }

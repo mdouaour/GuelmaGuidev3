@@ -50,12 +50,35 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
+  const title = `${data.place.name} | GuelmaGuide`
+  const description = data.place.description.slice(0, 160)
+  const image = data.place.images.length > 0 ? data.place.images[0] : '/og-image.png'
+
   return {
-    title: `${data.place.name} | GuelmaGuide`,
-    description: data.place.description.slice(0, 160),
+    title,
+    description,
     openGraph: {
-        images: data.place.images.length > 0 ? [data.place.images[0]] : [],
-    }
+      title,
+      description,
+      url: `https://guelma.guide/${locale}/place/${slug}`,
+      siteName: 'GuelmaGuide',
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: data.place.name,
+        },
+      ],
+      locale: locale === 'ar' ? 'ar_DZ' : locale === 'fr' ? 'fr_FR' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
   }
 }
 
@@ -87,10 +110,34 @@ export default async function PlacePage({ params }: PageProps) {
     notFound()
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": data.place.name,
+    "description": data.place.description,
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": data.place.latitude,
+      "longitude": data.place.longitude,
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Guelma",
+      "addressCountry": "DZ",
+    },
+    "image": data.place.images,
+  }
+
   return (
-    <PlaceDetailsClient 
-      initialPlace={data.place} 
-      initialActivities={data.activities} 
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PlaceDetailsClient 
+        initialPlace={data.place} 
+        initialActivities={data.activities} 
+      />
+    </>
   )
 }

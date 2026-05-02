@@ -1,13 +1,12 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://guelma.guide'
-
   return {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: ['/admin/', '/api/', '/profile/', '/my-activities/', '/onboarding/'],
     },
-    sitemap: `${base}/sitemap.xml`,
+    sitemap: 'https://guelma.guide/sitemap.xml',
   }
 }

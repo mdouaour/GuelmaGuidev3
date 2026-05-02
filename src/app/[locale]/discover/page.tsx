@@ -2,9 +2,42 @@ import { type Metadata } from 'next'
 import { serverGetPlaces } from '@/lib/server-api'
 import DiscoverClient from '@/components/DiscoverClient'
 
-export const metadata: Metadata = {
-  title: 'Discover Places in Guelma | GuelmaGuide',
-  description: 'Search and filter historical sites, natural wonders, and local favorites in Guelma. Use our interactive map to find your next destination.',
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const sParams = await searchParams
+  
+  const title = sParams.keyword 
+    ? `${sParams.keyword} in Guelma | Discover | GuelmaGuide` 
+    : 'Discover Places in Guelma | GuelmaGuide'
+  
+  const description = 'Search and filter historical sites, natural wonders, and local favorites in Guelma. Use our interactive map to find your next destination.'
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://guelma.guide/${locale}/discover`,
+      siteName: 'GuelmaGuide',
+      images: [
+        {
+          url: '/discover-og.png',
+          width: 1200,
+          height: 630,
+          alt: 'Discover Guelma',
+        },
+      ],
+      locale: locale === 'ar' ? 'ar_DZ' : locale === 'fr' ? 'fr_FR' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/discover-og.png'],
+    },
+  }
 }
 
 interface PageProps {
