@@ -1,37 +1,29 @@
-# 📊 Monitoring & Production Observability
+# 📊 Monitoring & SaaS Observability
 
-Professional-grade monitoring strategy for GuelmaGuide.
+GuelmaGuide follows a "Proactive Detection" strategy to identify issues before users report them.
 
-## 📡 1. Real-time Health Monitoring
-
-We use the central `/health` endpoint for automated uptime monitoring.
-
-*   **URL**: `https://api.guelma.guide/health`
-*   **Tool Choice**: Better Stack Uptime or UptimeRobot (Free tiers).
-*   **Heartbeat**: Configure a 1-minute check interval.
-*   **Alerting**: Instant notification via Slack/Discord if the status changes from `ok`.
+## 🕒 1. Uptime Monitoring
+We use external pings to monitor the heartbeat of the platform.
+- **Target**: `https://api.guelma.guide/health`
+- **Tool**: Better Stack or UptimeRobot.
+- **Frequency**: Every 60 seconds.
+- **Alerting**: SMS/Slack alerts triggered if response time > 2000ms or status code !== 200.
 
 ## 🚨 2. Error Tracking (Sentry)
-
-Sentry is integrated into both Frontend and Backend to catch silent failures.
-
-*   **Frontend**: Tracks hydration mismatches, API timeouts, and JS crashes.
-*   **Backend**: Tracks DB deadlock errors, 500 crashes, and AI API failures.
-*   **Usage**: Access the Sentry Dashboard for your GuelmaGuide project to see stack traces.
+Sentry is our primary tool for debugging production crashes without requiring user screen-recordings.
+- **Frontend Errors**: Captured via `@sentry/nextjs`. Tracks hydration issues and API failures.
+- **Backend Errors**: Captured via `sentry-sdk`. Tracks DB deadlocks and logic errors.
+- **Alert Strategy**: Major errors trigger a Slack notification; minor warnings are reviewed weekly.
 
 ## 📝 3. Logging Strategy
+- **Backend**: Python logs are streamed to Railway. Standard `LOG_LEVEL` is set to `INFO`.
+- **Worker**: arq job logs track background tasks (image optimization, email sending).
+- **Searchable Logs**: For advanced auditing, connect Railway logs to Axiom or Logflare.
 
-*   **Standard Logs**: Handled by Railway (stdout/stderr).
-*   **Audit Trail**: Important actions (approvals, payments) are logged with user context.
-*   **Log Retention**: Logs are kept for 7 days on the free tier. For enterprise persistence, consider a Logflare instance.
+## 🚀 4. Performance Metrics
+- **Core Web Vitals**: Monitored via Vercel Analytics. Focus on **LCP** (Largest Contentful Paint) for users on regional mobile networks.
+- **Slowest Queries**: Monitored in the Railway Postgres dashboard. Every query taking > 100ms should be analyzed for missing indexes.
 
-## 📈 4. Performance & Core Web Vitals
-
-*   **Google Search Console**: Monitor indexing of new places.
-*   **Vercel Analytics**: Check LCP (Largest Contentful Paint) for users in different regions of Algeria.
-*   **Database optimization**: Keep an eye on slow queries in the Railway Postgres dashboard - index fields like `category` and `theme` in the `places` table.
-
-## 💳 5. Financial Monitoring
-
-*   **Stripe Dashboard**: Monitor subscription growth and recurring revenue (MRR).
-*   **AI Budget**: Check Google AI Studio usage regularly to stay within the free tier or budget limits.
+## 🛡 5. Security Monitoring
+- **Failed Login Spikes**: Monitored via Redis-based rate limiting logs. High spikes on `/api/auth/login` trigger temporary IP bans.
+- **Gemini Usage**: Monitor the AI Studio billing console to ensure tokens aren't being exhausted by automated scrapers.

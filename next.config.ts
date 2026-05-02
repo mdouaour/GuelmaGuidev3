@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import withPWA from "next-pwa";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const config: NextConfig = {
   output: "standalone",
@@ -35,10 +38,19 @@ const config: NextConfig = {
         { key: 'Content-Security-Policy', value: "default-src 'self'; img-src 'self' https://images.unsplash.com https://upload.wikimedia.org https://*.tile.openstreetmap.org data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self';" },
       ]
     }]
+  },
+  async rewrites() {
+    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000';
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination: `${apiBaseUrl.replace(/\/$/, '')}/api/v1/:path*`,
+      },
+    ];
   }
 };
 
-const nextConfig = withPWA({
+const nextConfig = withNextIntl(withPWA({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
   register: true,
@@ -47,7 +59,7 @@ const nextConfig = withPWA({
   fallbacks: {
     document: '/offline',
   },
-})(config);
+})(config));
 
 export default withSentryConfig(nextConfig, {
   // For all available options, see:

@@ -71,7 +71,8 @@ async def health_check() -> dict[str, Any]:
         "environment": settings.APP_ENV,
         "services": {
             "database": "unknown",
-            "redis": "unknown"
+            "redis": "unknown",
+            "auth": "unknown"
         }
     }
     
@@ -97,6 +98,12 @@ async def health_check() -> dict[str, Any]:
             health_status["services"]["redis"] = f"error: {str(e)}"
     else:
         health_status["services"]["redis"] = "disabled"
+
+    # Check Auth configuration
+    if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET:
+        health_status["services"]["auth"] = "working"
+    else:
+        health_status["services"]["auth"] = "partial (missing google oauth vars)"
         
     return health_status
 
