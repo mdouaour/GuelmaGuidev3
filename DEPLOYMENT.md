@@ -1,95 +1,67 @@
-# 🚀 SaaS-Grade Deployment Guide
+# 🚀 SaaS-Grade Production Deployment Guide
 
-GuelmaGuide uses a modern, automated, and secure deployment pipeline designed for 99.9% uptime and zero-manual-risk updates.
+This guide ensures reliable, zero-risk deployments for the GuelmaGuide platform.
 
-## 🏗 System Architecture
+## 🏗 Multi-Environment Architecture
 
-The platform is split into two independent services communicating via a secure API layer:
-1.  **Backend (FastAPI)**: Hosted on Railway. Internal services include Postgres, Redis, and arq workers.
-2.  **Frontend (Next.js)**: Hosted on Vercel. Global delivery via CDN.
-
----
-
-## 🛠 Step 1: Infrastructure Prereqs
-
-1.  **Google Cloud Console**:
-    *   Create an OAuth 2.0 Client.
-    *   Set Authorized Redirect URI: `https://api.guelma.guide/api/v1/auth/google/callback`
-2.  **Cloudflare R2**:
-    *   Create a bucket named `guelma-guide-assets`.
-    *   Set up a public URL or custom domain.
-3.  **Stripe**:
-    *   Configure a Subscription product.
-    *   Copy the **Secret Key** and **Webhook Signing Secret**.
+| Environment | Branch | API URL | Frontend URL |
+| :--- | :--- | :--- | :--- |
+| **Development** | local | `localhost:8000` | `localhost:3000` |
+| **Staging** | `staging` | `api-staging.guelma.guide` | `staging.guelma.guide` |
+| **Production** | `main` | `api.guelma.guide` | `guelma.guide` |
 
 ---
 
-## ⚙️ Step 2: Service Configuration
+## 🛠 Step 1: Initial Infrastructure Setup
 
-Configure variables in the respective dashboards according to `ENVIRONMENT.md`.
+Before running the CI/CD pipeline, ensure the following are created:
 
-### 🚨 Critical Synchronization
-The `JWT_SECRET_KEY` **MUST** be identical on both Vercel and Railway. If they differ, the proxy will correctly route requests, but the backend will reject the tokens, causing a "Login loop".
-
----
-
-## 🚀 Step 3: CI/CD Pipeline Flow
-
-Our GitHub Actions pipeline (`deploy.yml`) is the "Safety Guard" for the codebase.
-
-### 🟢 Normal Flow
-1.  **Commit** to `staging` branch.
-2.  **Validation**: Build frontend, run backend checks.
-3.  **Deploy**: Pushes to Railway Staging.
-4.  **Verification**: Automated health check calls `/health`.
-5.  **Merge** to `main` branch.
-6.  **Production Push**: Pushes to Railway Prod, then Vercel Prod.
+1.  **Railway**: Create two services: `guelma-api` (Prod) and `guelma-api-staging` (Staging).
+2.  **Vercel**: Link your repository to a Vercel project.
+3.  **Postgres**: Ensure separate databases are configured for staging and production.
+4.  **Google Cloud**: Configure OAuth credentials with both staging and production redirect URIs.
 
 ---
 
-## 🧪 Step 4: Health & Verification
+## 🔑 Step 2: Secret Management
 
-After every deployment, visit:
-`https://api.guelma.guide/health`
+Add these secrets to **GitHub Repository Settings > Secrets and variables > Actions**:
 
-**Expected Status 200 OK:**
-```json
-{
-  "status": "ok",
-  "version": "0.1.0",
-  "environment": "production",
-  "services": {
-    "database": "connected",
-    "redis": "connected",
-    "auth": "working"
-  }
-}
-```
+| Secret Key | Description |
+| :--- | :--- |
+| `VERCEL_TOKEN` | Required for automated frontend deployments. |
+| `RAILWAY_TOKEN` | Required for automated backend deployments. |
+| `DATABASE_URL` | Production Postgres connection string. |
+| `JWT_SECRET_KEY` | Secret for auth tokens (Min 32 characters). |
 
 ---
 
-## 🔁 Step 5: Rollback Procedures
+## 🚀 Step 3: Deployment Pipeline
 
-### Automated
-If the backend health check fails during the `deploy-production` job, the GitHub Action will stop, preventing the frontend from pointing to a broken API.
+Our automated pipeline (`deploy.yml`) performs the following safety checks:
 
-### Manual Backend Rollback (Railway)
-1.  Go to Railway Dashboard.
-2.  Select **Deployment History**.
-3.  Click **Rollback** on the last known working image.
-
-### Manual Frontend Rollback (Vercel)
-1.  Go to Vercel Project.
-2.  Click **Deployments**.
-3.  Find the previous "Production" build and click **Redeploy > Promote**.
+1.  **Secret Audit**: Verifies all required keys exist before starting.
+2.  **Backend Integrity**: Compiles Python source and runs full test suite.
+3.  **Frontend Validation**: Verifies Next.js project compiles without errors.
+4.  **Deploy (Backend)**: Pushes to Railway.
+5.  **Health Check**: Pings `/health` up to 3 times with a backoff delay.
+6.  **Deploy (Frontend)**: Uses the Vercel `--prebuilt` strategy for ultra-reliable pushes.
 
 ---
 
-## 📉 Failure Analysis
+## 🔁 Step 4: Crisis Management (Rollbacks)
 
-| Symptom | Probable Cause | Resolution |
-| :--- | :--- | :--- |
-| **502 Bad Gateway** | Backend service crashed or booting. | Check Railway logs for startup errors. |
-| **Infinite Redirects** | `GOOGLE_REDIRECT_URI` mismatch. | Verify redirect URI in Google Cloud Console. |
-| **CORS Errors** | `BACKEND_CORS_ORIGINS` is wrong. | Ensure it includes your exact Vercel domain. |
-| **Auth 401** | `JWT_SECRET_KEY` mismatch. | Regenerate and sync keys in both dashboards. |
+### 🚨 Automation Safety
+If the **Health Check** or **Migrations** step fails, the pipeline stops immediately. This prevents the frontend from updating, effectively shielding users from a broken backend.
+
+### 🛠 Manual Rollback
+*   **Backend (Railway)**: Visit the service board, go to "Settings" > "Deployments", and click **Rollback** on the last stable build.
+*   **Frontend (Vercel)**: Navigate to the "Deployments" tab and select the last production build to **Redeploy**.
+
+---
+
+## 📉 Troubleshooting
+
+*   **Pipeline fails at "Secret Audit"**: Check your GitHub Secrets. Look for typos or missing values.
+*   **Health Check Timeout**: The backend may be cold-starting. The pipeline will retry 3 times automatically. If it still fails, check Railway logs for `ModuleNotFoundError` or DB connection timeouts.
+*   **Build failure**: Ensure `package-lock.json` and `requirements.txt` are up to date.

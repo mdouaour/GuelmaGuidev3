@@ -6,56 +6,99 @@ on:
   pull_request:
     branches: [main, staging]
 
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
 jobs:
-  validate-and-test:
-    name: Validate & Test
+  validate-secrets:
+    name: Pre-flight Secret Validation
     runs-on: ubuntu-latest
+    steps:
+      - name: Check Required Secrets
+        shell: bash
+        run: |
+          MISSING=0
+          check_secret() {
+            if [ -z "${!1}" ]; then
+              echo "❌ Error: Secret $1 is missing!"
+              MISSING=1
+            else
+              echo "✅ Secret $1 is present."
+            fi
+          }
+
+          check_secret "DATABASE_URL"
+          check_secret "JWT_SECRET_KEY"
+          check_secret "RAILWAY_TOKEN"
+          check_secret "VERCEL_TOKEN"
+
+          if [ "$MISSING" -eq 1 ]; then
+            echo "Critical deployment secrets are missing. Stopping pipeline."
+            exit 1
+          fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  validate-and-test:
+    name: Build & Test
+    needs: validate-secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
 
-      - name: Install Frontend Dependencies
-        run: npm ci
-
-      - name: Install Backend Dependencies
+      - name: Install Dependencies
         run: |
+          npm ci
           cd backend
           pip install -r requirements.txt
           pip install pytest
+
+      - name: Backend Syntax Validation
+        run: |
+          cd backend
+          python -m compileall .
+
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          pytest tests/ --disable-warnings
 
       - name: Validate Frontend Build
         run: npm run build
         env:
           NEXT_PUBLIC_API_BASE_URL: https://mock-api.guelma.guide
           NEXT_PUBLIC_APP_URL: https://mock.guelma.guide
-          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY_MOCK || 'placeholder-secret-at-least-32-chars-long' }}
-
-      - name: Run Backend Tests
-        run: |
-          cd backend
-          pytest tests/ --disable-warnings
-        # If tests/ doesn't exist yet, we can skip or use simple check
-        continue-on-error: true 
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
   deploy-staging:
     name: Deploy Staging
     needs: validate-and-test
     if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment: staging
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Utilities
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Install Railway CLI
         run: npm i -g @railway/cli
@@ -63,41 +106,50 @@ jobs:
       - name: Deploy Backend (Staging)
         run: railway up --service guelma-api-staging --detach
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_STAGING_TOKEN }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         working-directory: ./backend
 
-      - name: Staging Health Check
+      - name: Staging Health Check (With Retries)
         run: |
-          echo "Waiting for staging backend..."
-          sleep 20
           STAGING_URL="https://api-staging.guelma.guide/health"
-          STATUS=$(curl -s $STAGING_URL | jq -r '.status')
-          if [ "$STATUS" != "ok" ]; then
-            echo "Staging Health Check Failed"
-            exit 1
-          fi
+          max_retries=3
+          count=0
+          while [ $count -lt $max_retries ]; do
+            count=$((count+1))
+            echo "Attempt $count: Checking $STAGING_URL"
+            STATUS=$(curl -s --max-time 10 $STAGING_URL | jq -r '.status' 2>/dev/null || echo "failed")
+            if [ "$STATUS" == "ok" ]; then
+              echo "✅ Staging Health Check Passed"
+              exit 0
+            fi
+            echo "⚠️ Attempt $count failed. Retrying in 15 seconds..."
+            sleep 15
+          done
+          echo "❌ Staging Health Check Failed after $max_retries attempts"
+          exit 1
 
       - name: Deploy Frontend (Staging Vercel)
         run: |
           npm install --global vercel@latest
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --name guelma-guide-staging
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
   deploy-production:
     name: Deploy Production
     needs: validate-and-test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment: production
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Utilities
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Install Railway CLI
         run: npm i -g @railway/cli
-
-      - name: Verify Production Env Vars
-        run: |
-          if [ -z "${{ secrets.PROD_DATABASE_URL }}" ]; then echo "PROD_DATABASE_URL missing"; exit 1; fi
-          if [ -z "${{ secrets.PROD_JWT_SECRET_KEY }}" ]; then echo "PROD_JWT_SECRET_KEY missing"; exit 1; fi
 
       - name: Deploy Backend (Production)
         run: railway up --service guelma-api --detach
@@ -111,16 +163,24 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         working-directory: ./backend
 
-      - name: Production Health Check
+      - name: Production Health Check (With Retries)
         run: |
-          echo "Waiting for production backend..."
-          sleep 30
           PROD_URL="https://api.guelma.guide/health"
-          STATUS=$(curl -s $PROD_URL | jq -r '.status')
-          if [ "$STATUS" != "ok" ]; then
-            echo "Production Health Check Failed. Triggering Manual Review Required."
-            exit 1
-          fi
+          max_retries=3
+          count=0
+          while [ $count -lt $max_retries ]; do
+            count=$((count+1))
+            echo "Attempt $count: Checking $PROD_URL"
+            STATUS=$(curl -s --max-time 10 $PROD_URL | jq -r '.status' 2>/dev/null || echo "failed")
+            if [ "$STATUS" == "ok" ]; then
+              echo "✅ Production Health Check Passed"
+              exit 0
+            fi
+            echo "⚠️ Attempt $count failed. Retrying in 20 seconds..."
+            sleep 20
+          done
+          echo "❌ Production Health Check Failed. Manual intervention required."
+          exit 1
 
       - name: Deploy Frontend (Production Vercel)
         run: |
