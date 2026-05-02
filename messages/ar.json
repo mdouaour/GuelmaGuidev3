@@ -1,0 +1,228 @@
+{
+  "nav": {
+    "discover": "اكتشف",
+    "activities": "الأنشطة",
+    "wishlist": "المفضلة",
+    "ai_guide": "الدليل الذكي",
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي"
+  },
+  "home": {
+    "welcome": "مرحبا بك في قالمة",
+    "hero_title": "Discover Guelma 🌿",
+    "hero_desc": "استكشف الأماكن الطبيعية والأنشطة المحلية بسهولة، واستخدم الدليل الذكي لتخطيط يومك.",
+    "explore_places": "استكشف الأماكن",
+    "view_activities": "عرض الأنشطة",
+    "login_info": "يمكنك التصفح بدون تسجيل. يلزم تسجيل الدخول فقط للانضمام للأنشطة أو إنشاء نشاط.",
+    "preview": "نظرة سريعة",
+    "places_title": "أماكن مميزة",
+    "activities_title": "أنشطة قادمة",
+    "ai_guide_title": "الدليل الذكي",
+    "ai_guide_subtitle": "اقترح لي أفضل الأماكن والأنشطة",
+    "ai_guide_desc": "استخدم الدليل الذكي للحصول على توصيات سريعة حسب اهتماماتك.",
+    "try_ai": "جرب الدليل الذكي"
+  },
+  "discover": {
+    "title": "اكتشف الأماكن",
+    "desc": "اكتشف أفضل الوجهات الطبيعية والثقافية في قالمة.",
+    "search_keyword": "بحث بالكلمة المفتاحية",
+    "search_theme": "الثيم (nature, relaxation...)",
+    "map": "الخريطة",
+    "search_suggestions": "اقتراحات",
+    "view_details": "عرض التفاصيل ←",
+    "no_results": "لا توجد نتائج مطابقة.",
+    "page": "الصفحة",
+    "total": "الإجمالي",
+    "prev": "السابق",
+    "next": "التالي"
+  },
+  "footer": {
+    "tagline": "دليل مدينة ذكي لقالمة، الجزائر."
+  },
+  "activities": {
+    "title": "الأنشطة",
+    "desc": "تصفح الأنشطة بحرية. تسجيل الدخول مطلوب فقط للانضمام أو إنشاء نشاط.",
+    "my_activities": "أنشطتي",
+    "create_activity": "إنشاء نشاط",
+    "form_title": "عنوان النشاط",
+    "form_select_place": "اختر مكانًا",
+    "form_loading_places": "جاري التحميل...",
+    "form_desc": "وصف النشاط",
+    "form_max_participants": "الحد الأقصى للمشاركين",
+    "form_creating": "جاري الإنشاء...",
+    "form_save": "حفظ النشاط",
+    "filter_all_places": "جميع الأماكن",
+    "filter_available": "متاح فقط",
+    "syncing_joined": "مزامنة الأنشطة المنضم إليها...",
+    "label_place": "المكان",
+    "label_participants": "مشاركين",
+    "btn_updating": "جارٍ التحديث...",
+    "btn_leave": "مغادرة",
+    "btn_join": "انضمام",
+    "btn_get_ticket": "احصل على تذكرة",
+    "free": "مجاني",
+    "login_to_join": "يرجى تسجيل الدخول للانضمام.",
+    "login_first": "يرجى تسجيل الدخول أولاً.",
+    "check_details": "تحقق من بيانات النشاط."
+  },
+  "ai": {
+    "title": "الدليل الذكي",
+    "desc": "مساعد ذكي لاختيار أفضل الأماكن والأنشطة حسب مزاجك.",
+    "cat_placeholder": "الفئة (nature, culture...)",
+    "morning": "الصباح",
+    "afternoon": "المساء",
+    "evening": "الليل",
+    "all_day": "اليوم كاملاً",
+    "btn_recommend": "توصية",
+    "natural_placeholder": "اسأل بشكل طبيعي (مثلاً: 'أين يمكنني الذهاب مع أطفالي هذا المساء؟')",
+    "thinking": "جاري التفكير...",
+    "explanation": "لماذا تم اقتراح هذا؟",
+    "ask_btn": "اسأل الدليل",
+    "recommendations": "التوصيات",
+    "empty": "اختر فلترًا ثم احصل على توصيات.",
+    "places": "الأماكن",
+    "activities": "الأنشطة"
+  },
+  "place_details": {
+    "back": "العودة إلى الاكتشاف →",
+    "title": "تفاصيل المكان",
+    "category": "الفئة:",
+    "theme": "الثيم:",
+    "coordinates": "الإحداثيات:",
+    "related_activities": "أنشطة مرتبطة",
+    "no_activities": "لا توجد أنشطة متاحة حالياً.",
+    "see_all": "عرض جميع الأنشطة ←"
+  },
+  "my_activities": {
+    "title": "أنشطتي",
+    "desc": "إدارة حجوزاتك وتذاكرك",
+    "login_required": "يلزم تسجيل الدخول لعرض أنشطتك.",
+    "coming_soon": "نشاطك قادم قريباً",
+    "status_upcoming": "قادم",
+    "status_past": "منتهي",
+    "no_activities": "لم تنضم لأي نشاط بعد.",
+    "ticket_paid": "تم دفع التذكرة",
+    "ticket_payment_pending": "بانتظار الدفع",
+    "ticket_free": "دخول مجاني",
+    "complete_payment": "أكمل عملية الدفع لتأمين مكانك",
+    "browse_activities": "تصفح الأنشطة"
+  },
+  "verify_email": {
+    "title": "التحقق من البريد الإلكتروني",
+    "missing_token": "رمز التحقق مفقود.",
+    "loading": "جاري التحقق...",
+    "success": "✓ تم التحقق بنجاح!",
+    "failed": "فشل التحقق",
+    "resend": "إعادة إرسال رابط التحقق",
+    "sent_title": "تم إرسال رابط التحقق",
+    "sent_desc": "أرسلنا رابط التحقق إلى {email}. تحقق من بريدك الوارد.",
+    "back_to_auth": "العودة لتسجيل الدخول"
+  },
+  "password_strength": {
+    "label": "قوة كلمة المرور:",
+    "score_0": "ضعيف جداً",
+    "score_1": "ضعيف",
+    "score_2": "مقبول",
+    "score_3": "قوي",
+    "score_4": "قوي جداً"
+  },
+  "unverified_banner": {
+    "text": "بريدك الإلكتروني غير موثق.",
+    "link": "اذهب إلى إعدادات الحساب لإعادة الإرسال"
+  },
+  "auth": {
+    "login": "دخول",
+    "logout": "خروج",
+    "page_title": "الحساب",
+    "page_desc": "التصفح متاح للجميع. سجل الدخول فقط عندما تريد الانضمام أو إنشاء نشاط.",
+    "demo_title": "حساب تجريبي",
+    "demo_btn": "استخدم الحساب التجريبي",
+    "logged_in_as": "مرحباً {email}",
+    "email_not_verified": "البريد الإلكتروني غير موثق",
+    "verification_sent": "أرسل لك رابط التحقق إلى بريدك الإلكتروني.",
+    "resent_success": "تم إعادة الإرسال.",
+    "btn_sending": "جاري الإرسال...",
+    "btn_resend": "إعادة إرسال رابط التحقق",
+    "resend_error": "فشل الإرسال، حاول مجدداً.",
+    "go_to_activities": "اذهب للأنشطة",
+    "my_activities": "أنشطتي",
+    "register": "إنشاء حساب",
+    "password": "كلمة المرور",
+    "sign_in": "دخول",
+    "create_account": "تسجيل",
+    "continue_with_google": "المتابعة باستخدام Google",
+    "session_expired": "انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى."
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "mark_all_read": "تحديد الكل كمقروء",
+    "empty": "لا توجد إشعارات بعد",
+    "unread": "غير مقروء"
+  },
+  "places": {
+    "reviews": "التقييمات",
+    "add_review": "أضف تقييماً",
+    "rating": "التقييم",
+    "submit": "إرسال التقييم",
+    "no_reviews": "لا توجد تقييمات بعد. كن أول من يقيم!",
+    "saved": "محفوظ في المفضلة",
+    "save": "حفظ في المفضلة",
+    "not_logged_in": "يرجى تسجيل الدخول للتقييم أو حفظ الأماكن"
+  },
+  "admin": {
+    "title": "لوحة الإدارة",
+    "tabs": {
+      "pending": "قيد الانتظار",
+      "users": "المستخدمين",
+      "places": "الأماكن",
+      "reported": "البلاغات",
+      "stats": "الإحصائيات"
+    },
+    "activities": {
+      "approve": "قبول",
+      "reject": "رفض",
+      "reason_placeholder": "سبب الرفض...",
+      "no_pending": "لا توجد أنشطة قيد الانتظار",
+      "organizer": "المنظم",
+      "place": "المكان",
+      "date": "التاريخ"
+    },
+    "users": {
+        "search": "بحث عن مستخدمين...",
+        "promote": "ترقية لمنظم",
+        "verified": "موثق",
+        "role": "الدور",
+        "joined": "تاريخ الانضمام"
+    },
+    "stats": {
+        "header": "نظرة عامة",
+        "total_users": "إجمالي المستخدمين",
+        "total_places": "إجمالي الأماكن",
+        "total_activities": "إجمالي الأنشطة",
+        "this_month": "جديد هذا الشهر"
+    }
+  },
+    "step_language": "اختر لغتك",
+    "step_interests": "ماذا تحب؟",
+    "step_location": "أين أنت؟",
+    "step_interests_desc": "اختر 3 اهتمامات على الأقل لتخصيص تجربتك.",
+    "step_location_desc": "امنح تصريحا للموقع للعثور على أماكن قريبة منك.",
+    "allow_location": "السماح بالموقع",
+    "skip": "تخطي",
+    "finish": "لنبدأ!",
+    "next": "التالي",
+    "interests": {
+      "nature": "الطبيعة",
+      "history": "التاريخ",
+      "thermal_baths": "الحمامات المعدنية",
+      "sport": "الرياضة",
+      "food": "الطعام",
+      "culture": "الثقافة",
+      "adventure": "المغامرة",
+      "family": "العائلة"
+    }
+  },
+  "search": {
+    "placeholder": "بحث"
+  }
+}

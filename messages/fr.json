@@ -1,0 +1,228 @@
+{
+  "nav": {
+    "discover": "Découvrir",
+    "activities": "Activités",
+    "wishlist": "Favoris",
+    "ai_guide": "Guide IA",
+    "home": "Accueil",
+    "profile": "Profil"
+  },
+  "home": {
+    "welcome": "Bienvenue à Guelma",
+    "hero_title": "Découvrez Guelma 🌿",
+    "hero_desc": "Explorez les lieux et activités locaux en toute simplicité, puis utilisez le guide IA pour planifier votre journée.",
+    "explore_places": "Explorer les lieux",
+    "view_activities": "Voir les activités",
+    "login_info": "Naviguez librement sans connexion. La connexion n'est requise que pour rejoindre ou créer une activité.",
+    "preview": "Aperçu",
+    "places_title": "Lieux",
+    "activities_title": "Activités",
+    "ai_guide_title": "Guide IA",
+    "ai_guide_subtitle": "Obtenez des suggestions intelligentes de lieux et d'activités",
+    "ai_guide_desc": "Utilisez le guide IA pour des recommandations rapides basées sur vos intérêts.",
+    "try_ai": "Essayer le Guide IA"
+  },
+  "discover": {
+    "title": "Découvrir des lieux",
+    "desc": "Explorez les meilleurs sites naturels et culturels de Guelma.",
+    "search_keyword": "Recherche par mot-clé",
+    "search_theme": "Thème (nature, relaxation...)",
+    "map": "Carte",
+    "search_suggestions": "Suggestions",
+    "view_details": "Voir les détails →",
+    "no_results": "Aucun lieu ne correspond à vos filtres.",
+    "page": "Page",
+    "total": "Total",
+    "prev": "Précédent",
+    "next": "Suivant"
+  },
+  "footer": {
+    "tagline": "Guide urbain intelligent pour Guelma, Algérie."
+  },
+  "activities": {
+    "title": "Activités",
+    "desc": "Parcourez les activités librement. La connexion n'est requise que pour rejoindre ou en créer une.",
+    "my_activities": "Mes activités",
+    "create_activity": "Créer une activité",
+    "form_title": "Titre de l'activité",
+    "form_select_place": "Sélectionnez un lieu",
+    "form_loading_places": "Chargement des lieux...",
+    "form_desc": "Description",
+    "form_max_participants": "Nombre max de participants",
+    "form_creating": "Création...",
+    "form_save": "Enregistrer l'activité",
+    "filter_all_places": "Tous les lieux",
+    "filter_available": "Uniquement disponible",
+    "syncing_joined": "Synchronisation des activités rejointes...",
+    "label_place": "Lieu",
+    "label_participants": "participants",
+    "btn_updating": "Mise à jour...",
+    "btn_leave": "Quitter",
+    "btn_join": "Rejoindre",
+    "btn_get_ticket": "Prendre un ticket",
+    "free": "Gratuit",
+    "login_to_join": "Veuillez vous connecter pour rejoindre les activités.",
+    "login_first": "Veuillez vous connecter d'abord.",
+    "check_details": "Veuillez vérifier les détails de l'activité."
+  },
+  "ai": {
+    "title": "Guide IA",
+    "desc": "Un assistant intelligent pour trouver les meilleurs lieux et activités selon votre humeur.",
+    "cat_placeholder": "catégorie (nature, culture...)",
+    "morning": "matin",
+    "afternoon": "après-midi",
+    "evening": "soirée",
+    "all_day": "toute la journée",
+    "btn_recommend": "Recommander",
+    "natural_placeholder": "Demandez naturellement (ex: 'Où puis-je aller avec des enfants cet après-midi ?')",
+    "thinking": "Réflexion...",
+    "explanation": "Pourquoi ceci a été recommandé :",
+    "ask_btn": "Demander au Guide",
+    "recommendations": "Recommandations",
+    "empty": "Sélectionnez des filtres pour obtenir des recommandations.",
+    "places": "Lieux",
+    "activities": "Activités"
+  },
+  "place_details": {
+    "back": "← Retour à la découverte",
+    "title": "Détails du lieu",
+    "category": "Catégorie :",
+    "theme": "Thème :",
+    "coordinates": "Coordonnées :",
+    "related_activities": "Activités liées",
+    "no_activities": "Aucune activité disponible pour ce lieu pour le moment.",
+    "see_all": "Voir toutes les activités →"
+  },
+  "my_activities": {
+    "title": "Mes activités",
+    "desc": "Gérez vos inscriptions et vos billets",
+    "login_required": "La connexion est requise pour voir vos activités.",
+    "coming_soon": "Votre activité arrive bientôt",
+    "status_upcoming": "à venir",
+    "status_past": "passé",
+    "no_activities": "Vous n'avez encore rejoint aucune activité.",
+    "ticket_paid": "Billet Payé",
+    "ticket_payment_pending": "Paiement en attente",
+    "ticket_free": "Entrée Gratuite",
+    "complete_payment": "Complétez le paiement pour garantir votre place",
+    "browse_activities": "Parcourir les activités"
+  },
+  "verify_email": {
+    "title": "Vérification de l'email",
+    "missing_token": "Le jeton de vérification est manquant.",
+    "loading": "Vérification de votre email...",
+    "success": "✓ Email vérifié avec succès !",
+    "failed": "Échec de la vérification",
+    "resend": "Renvoyer le lien de vérification",
+    "sent_title": "Vérification envoyée",
+    "sent_desc": "Nous avons envoyé un lien de vérification à {email}. Vérifiez votre boîte de réception.",
+    "back_to_auth": "Retour à la connexion"
+  },
+  "password_strength": {
+    "label": "Force du mot de passe :",
+    "score_0": "Très faible",
+    "score_1": "Faible",
+    "score_2": "Moyen",
+    "score_3": "Fort",
+    "score_4": "Très fort"
+  },
+  "unverified_banner": {
+    "text": "Votre email n'est pas vérifié.",
+    "link": "Allez sur votre compte pour renvoyer l'email de vérification."
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "page_title": "Compte",
+    "page_desc": "La navigation est ouverte à tous. La connexion n'est nécessaire que pour rejoindre ou créer des activités.",
+    "demo_title": "Compte de démonstration",
+    "demo_btn": "Utiliser les identifiants démo",
+    "logged_in_as": "Vous êtes connecté en tant que {email}",
+    "email_not_verified": "Email non vérifié",
+    "verification_sent": "Un lien de vérification a été envoyé à votre email.",
+    "resent_success": "Renvoyé avec succès.",
+    "btn_sending": "Envoi...",
+    "btn_resend": "Renvoyer l'email de vérification",
+    "resend_error": "Échec de l'envoi, veuillez réessayer.",
+    "go_to_activities": "Aller aux activités",
+    "my_activities": "Mes activités",
+    "register": "S'inscrire",
+    "password": "Mot de passe",
+    "sign_in": "Se connecter",
+    "create_account": "Créer un compte",
+    "continue_with_google": "Continuer avec Google",
+    "session_expired": "Session expirée. Veuillez vous reconnecter."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "mark_all_read": "Tout marquer comme lu",
+    "empty": "Aucune notification pour le moment",
+    "unread": "non lu"
+  },
+  "places": {
+    "reviews": "Avis",
+    "add_review": "Ajouter un avis",
+    "rating": "Note",
+    "submit": "Envoyer l'avis",
+    "no_reviews": "Aucun avis pour le moment. Soyez le premier à donner votre avis !",
+    "saved": "Enregistré dans les favoris",
+    "save": "Enregistrer dans les favoris",
+    "not_logged_in": "Veuillez vous connecter pour donner votre avis ou enregistrer des lieux"
+  },
+  "admin": {
+    "title": "Tableau de bord Admin",
+    "tabs": {
+      "pending": "En attente",
+      "users": "Utilisateurs",
+      "places": "Lieux",
+      "reported": "Signalements",
+      "stats": "Stats"
+    },
+    "activities": {
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "reason_placeholder": "Raison du refus...",
+      "no_pending": "Aucune activité en attente",
+      "organizer": "Organisateur",
+      "place": "Lieu",
+      "date": "Date"
+    },
+    "users": {
+        "search": "Chercher utilisateurs...",
+        "promote": "Promouvoir en Organisateur",
+        "verified": "Vérifié",
+        "role": "Rôle",
+        "joined": "Rejoint"
+    },
+    "stats": {
+        "header": "Aperçu de la plateforme",
+        "total_users": "Total Utilisateurs",
+        "total_places": "Total Lieux",
+        "total_activities": "Total Activités",
+        "this_month": "Nouveaux ce mois"
+    }
+  },
+    "step_language": "Choisissez votre langue",
+    "step_interests": "Qu'est-ce que vous aimez ?",
+    "step_location": "Où êtes-vous ?",
+    "step_interests_desc": "Sélectionnez au moins 3 intérêts pour personnaliser votre expérience.",
+    "step_location_desc": "Autorisez l'accès à la localisation pour trouver des lieux proches de vous.",
+    "allow_location": "Autoriser la localisation",
+    "skip": "Passer",
+    "finish": "C'est parti !",
+    "next": "Suivant",
+    "interests": {
+      "nature": "Nature",
+      "history": "Histoire",
+      "thermal_baths": "Thermes",
+      "sport": "Sport",
+      "food": "Nourriture",
+      "culture": "Culture",
+      "adventure": "Aventure",
+      "family": "Famille"
+    }
+  },
+  "search": {
+    "placeholder": "Rechercher"
+  }
+}
