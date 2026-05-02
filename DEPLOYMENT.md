@@ -1,65 +1,67 @@
-# Deployment Guide: From Source to Production
+# 🚀 Deployment Guide: Production & Scalability
 
-This guide covers the end-to-end deployment of GuelmaGuide, explaining how each piece (Database, Backend, Frontend) fits together.
+This document provides the **CRITICAL** steps to take the Guelma platform from development to a professional production environment (Vercel, Railway, Cloud Run).
 
-## 1. Database Setup (PostgreSQL)
-
-You need a PostgreSQL database. We recommend **Railway** or **Neon** for a quick start.
-
-### Using Railway:
-1. Go to [Railway.app](https://railway.app).
-2. Click **New Project** > **Provision PostgreSQL**.
-3. Once created, go to the **Variables** tab and copy the `DATABASE_URL`. It usually looks like: `postgresql://postgres:password@host:port/railway`.
-
-### Seeding the Initial Data:
-The file `seed-data.json` contains the foundational landmarks. You should import these into your `places` table.
-1. Access your database via a tool like **DBeaver** or **pgAdmin**.
-2. Run the migration scripts (found in the backend repository) to create the schema.
-3. Use a manual script or the built-in "Suggest a Place" feature to populate the initial entries using the JSON data.
+## 1. Prerequisites
+- **GitHub Account**: To host your source code.
+- **Vercel/Railway Account**: Or any cloud provider supporting Node.js.
+- **PostgreSQL Database**: A managed instance (e.g., Neon or Railway DB).
+- **Gemini API Key**: From [Google AI Studio](https://aistudio.google.com/).
 
 ---
 
-## 2. Backend Deployment (FastAPI)
+## 2. Environment Configuration (FULL LIST)
+You must set these variables in your deployment dashboard (e.g., Vercel Project Settings).
 
-If you are running your own backend instance:
-1. Ensure the `DATABASE_URL` is set in the backend environment.
-2. The backend should be accessible via a public URL (e.g., `https://api.guelma.guide`).
-3. Set `JWT_SECRET_KEY` and `CORS_ORIGINS`.
-
----
-
-## 3. Frontend Deployment (Vercel or Cloud Run)
-
-### Using Vercel (Recommended for Next.js):
-1. Push your code to a GitHub repository.
-2. Connect the repository to [Vercel](https://vercel.com).
-3. **Important**: Add all environment variables in the Vercel Dashboard.
-
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `NEXT_PUBLIC_APP_URL` | Your public site URL | `https://guelma.guide` |
-| `API_BASE_URL` | The internal Python API | `https://api.guelma.guide` |
-| `NEXT_PUBLIC_GEMINI_API_KEY` | Your AI Studio Key | `AIzaSy...` |
-| `JWT_SECRET_KEY` | Must match the backend key | `your-secret-here` |
-
-### Using Cloud Run (AI Studio Standard):
-1. Run `gcloud builds submit --tag gcr.io/[PROJECT_ID]/guelma-guide`.
-2. Deploy using `gcloud run deploy ...` as shown in the previous steps.
+| Variable | Required | Example | Description |
+| :--- | :--- | :--- | :--- |
+| `NEXT_PUBLIC_APP_URL` | Yes | `https://guelma.guide` | Public URL of your site. |
+| `API_BASE_URL` | Yes | `https://api.guelma.guide/api/v1` | URL of the Python backend. |
+| `DATABASE_URL` | Yes | `postgresql://...` | Connection string for Postgres. |
+| `JWT_SECRET_KEY` | Yes | `random_32_char_string` | Used to sign your tokens. |
+| `NEXT_PUBLIC_GEMINI_API_KEY` | No | `AIzaSy...` | Enables client-side AI Guide. |
+| `SENTRY_DSN` | No | `https://...` | For real-time error tracking. |
 
 ---
 
-## 4. How Everything Connects (Step-by-Step)
+## 3. Deployment Steps
 
-1. **User enters the site**: Next.js detects the locale (e.g., `/ar`) and serves the cached layout.
-2. **Data hydration**: `getPlaces` is called. It triggers an internal fetch to `API_BASE_URL/v1/places`.
-3. **AI Recommendations**: If the user asks the AI Guide, the browser calls Gemini Directly using `NEXT_PUBLIC_GEMINI_API_KEY`.
-4. **Member Auth**: When logging in, the browser receives an `HttpOnly` cookie. This cookie is automatically attached to any subsequent fetch requests by the browser. The Next.js proxy forwards this cookie to the backend to verify the session.
+### Step A: Database & Backend
+1. **Provision Database**: Create a new PostgreSQL instance on Railway.
+2. **Apply Migrations**: 
+   - Connect to the backend folder (`/backend`).
+   - Run `alembic upgrade head`.
+3. **Deploy Backend**: 
+   - Point your hosting provider to the `/backend` directory.
+   - Ensure the `API_BASE_URL` matches where this is hosted.
+
+### Step B: Frontend (Next.js)
+1. **Import Project**: Link your GitHub repository to Vercel.
+2. **Framework Preset**: Ensure "Next.js" is selected.
+3. **Environment Variables**: Paste all variables from section 2 into the Vercel "Environment Variables" tab.
+4. **Build & Deploy**: Click Deploy!
 
 ---
 
-## 5. Post-Launch Checklist
+## 4. Verification & Testing
+Once deployed, perform these checks:
+1. **i18n Check**: Visit `/ar` and `/en` to ensure translations load.
+2. **Auth Check**: Attempt to Register and Login. Verify you receive the session cookie.
+3. **AI Guide**: Ask the AI Guide for a "Historical tour of Guelma". It should respond using your Gemini Key.
+4. **Map Check**: Ensure the map renders and you can click on landmarks.
 
-- [ ] Check `robots.txt` and `sitemap.xml` (visit `/sitemap.xml`).
-- [ ] Verify that Google Login popup works (Ensure `NEXT_PUBLIC_APP_URL` is listed in Google Cloud Console's authorized domains).
-- [ ] Test the "Suggest Place" flow as a regular user to ensure the point awarding logic triggers correctly on approval.
-- [ ] Check the **Partner Ads** space in the Community tab to see if the contact form sends feedback correctly.
+---
+
+## 5. Common Errors & Fixes
+- **401 Unauthorized**: Ensure `JWT_SECRET_KEY` matches exactly on both Frontend and Backend.
+- **CORS Error**: Update `BACKEND_CORS_ORIGINS` in your backend variables to include your Vercel domain.
+- **Map Not Loading**: Check if `NEXT_PUBLIC_API_BASE_URL` is correct and accessible.
+
+---
+
+## 6. How it Scrapes: Scaling to Other Cities
+To scale to Annaba or Constantine:
+1. **Update Data**: Add new entries to the `places` table with their city tags.
+2. **Multitenancy**: The frontend will automatically show them if you filter by city in the API request.
+3. **SEO**: Update `src/app/sitemap.ts` to include city-specific paths.
+

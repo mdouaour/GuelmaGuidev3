@@ -116,7 +116,7 @@ export default function CommunityClient() {
                 className="bg-emerald-50 border border-emerald-100 p-6 rounded-3xl text-center"
               >
                 <p className="text-emerald-700 font-bold mb-1">Message Received!</p>
-                <p className="text-emerald-600 text-xs">Thank you for helping Guelma evolve. We'll review your feedback.</p>
+                <p className="text-emerald-600 text-xs">Thank you for helping Guelma evolve. We&apos;ll review your feedback.</p>
               </motion.div>
             ) : (
               <form onSubmit={handleFeedback} className="space-y-4">
@@ -187,7 +187,7 @@ export default function CommunityClient() {
                <div className="max-w-xl">
                   <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-2">Community Partner Space</p>
                   <h3 className="text-3xl font-black mb-4">Promote your Heritage Business</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">Are you a local hotelier, artisan, or restaurateur in Guelma? Partner with us to appear in the "Recommended by Community" lists and reach thousands of explorers.</p>
+                  <p className="text-slate-400 text-sm leading-relaxed">Are you a local hotelier, artisan, or restaurateur in Guelma? Partner with us to appear in the &quot;Recommended by Community&quot; lists and reach thousands of explorers.</p>
                </div>
                <button 
                  onClick={() => {

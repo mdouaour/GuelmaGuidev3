@@ -25,9 +25,22 @@ const cairo = Cairo({
 })
 
 export const metadata: Metadata = {
-  title: 'GuelmaGuide | Smart discovery in Guelma',
-  description: 'Explore places and activities in Guelma with simple browsing, structured suggestions, and a lightweight AI guide.',
-  keywords: ['Guelma', 'Algeria', 'discover places', 'activities', 'AI guide', 'smart city guide'],
+  title: {
+    template: '%s | GuelmaGuide',
+    default: 'GuelmaGuide | Discover the Best of Guelma, Algeria',
+  },
+  description: 'Explore the historical landmarks, hidden gems, and community activities of Guelma. Powered by local insights and Gemini AI.',
+  keywords: ['Guelma', 'Algeria', 'Roman Theater Calama', 'Hammam Debagh', 'Algerian Tourism', 'Guelma Guide'],
+  authors: [{ name: 'Guelma Community' }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://guelma.guide'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/en',
+      'ar-DZ': '/ar',
+      'fr-FR': '/fr',
+    },
+  },
   openGraph: {
     title: 'GuelmaGuide | Smart discovery in Guelma',
     description: 'Explore places and activities in Guelma with a lightweight AI guide.',
