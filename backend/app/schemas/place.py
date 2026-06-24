@@ -20,7 +20,9 @@ class PlaceBase(BaseModel):
 
     @field_validator("name_ar", "name_en", "description_ar", "description_en", "theme")
     @classmethod
-    def validate_not_blank(cls, value: str) -> str:
+    def validate_not_blank(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
         normalized = value.strip()
         if not normalized:
             raise ValueError("Field cannot be blank")

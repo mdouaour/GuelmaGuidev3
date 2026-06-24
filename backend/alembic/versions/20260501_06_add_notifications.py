@@ -11,7 +11,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = '06_add_notifications'
-down_revision = '05_add_place_localized_fields'
+down_revision = '20260501_05'
 branch_labels = None
 depends_on = None
 

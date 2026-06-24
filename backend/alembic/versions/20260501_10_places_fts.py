@@ -29,11 +29,9 @@ def upgrade():
           NEW.search_vector :=
             setweight(to_tsvector('french', coalesce(NEW.name_en, '')), 'A') ||
             setweight(to_tsvector('french', coalesce(NEW.name_ar, '')), 'A') ||
-            setweight(to_tsvector('french', coalesce(NEW.name_fr, '')), 'A') ||
             setweight(to_tsvector('french', coalesce(NEW.category, '')), 'B') ||
             setweight(to_tsvector('french', coalesce(NEW.description_en, '')), 'C') ||
-            setweight(to_tsvector('french', coalesce(NEW.description_ar, '')), 'C') ||
-            setweight(to_tsvector('french', coalesce(NEW.description_fr, '')), 'C');
+            setweight(to_tsvector('french', coalesce(NEW.description_ar, '')), 'C');
           RETURN NEW;
         END
         $$ LANGUAGE plpgsql;
@@ -51,11 +49,9 @@ def upgrade():
         UPDATE places SET search_vector = 
             setweight(to_tsvector('french', coalesce(name_en, '')), 'A') ||
             setweight(to_tsvector('french', coalesce(name_ar, '')), 'A') ||
-            setweight(to_tsvector('french', coalesce(name_fr, '')), 'A') ||
             setweight(to_tsvector('french', coalesce(category, '')), 'B') ||
             setweight(to_tsvector('french', coalesce(description_en, '')), 'C') ||
-            setweight(to_tsvector('french', coalesce(description_ar, '')), 'C') ||
-            setweight(to_tsvector('french', coalesce(description_fr, '')), 'C');
+            setweight(to_tsvector('french', coalesce(description_ar, '')), 'C');
     """)
 
 def downgrade():
