@@ -9,7 +9,7 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en'
 });
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Check if we need to set CSRF token
   const hasCsrf = request.cookies.has(CSRF_COOKIE);
   
