@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Component, ErrorInfo, ReactNode } from 'react'
+import { useTranslations } from 'next-intl'
 import * as Sentry from '@sentry/nextjs'
 
 interface Props {
@@ -11,7 +12,7 @@ interface State {
   hasError: boolean
 }
 
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundaryClass extends Component<Props & { errorT: (key: string) => string }, State> {
   public state: State = {
     hasError: false
   }
@@ -32,6 +33,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
+      const { errorT } = this.props
       return (
         <div className="flex min-h-[400px] flex-col items-center justify-center p-6 text-center">
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-rose-100 text-rose-600">
@@ -50,15 +52,15 @@ class ErrorBoundary extends Component<Props, State> {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-slate-900">Something went wrong</h2>
+          <h2 className="text-2xl font-bold text-slate-900">{errorT('title')}</h2>
           <p className="mt-2 max-w-md text-slate-600">
-            We encountered an unexpected error. Don&apos;t worry, we&apos;ve been notified and are looking into it.
+            {errorT('description')}
           </p>
           <button
             onClick={this.handleReset}
             className="mt-6 rounded-xl bg-[#2E7D32] px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
-            Try again
+            {errorT('retry')}
           </button>
         </div>
       )
@@ -68,4 +70,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-export default ErrorBoundary
+export default function ErrorBoundary(props: Props) {
+  const errorT = useTranslations('error_boundary')
+  return <ErrorBoundaryClass {...props} errorT={errorT} />
+}

@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect } from 'react'
 import FadeInSection from '@/components/FadeInSection'
 import MapClient from '@/components/MapClient'
-import { buildPlacePath, getRecommendations, getPlaces, getActivities, type RecommendationsResponse, type Place, type Activity } from '@/lib/api'
+import { buildPlacePath, getRecommendations, getPlaces, getActivities, type RecommendationsResponse, type RecommendationPlace, type RecommendationActivity, type Place, type Activity } from '@/lib/api'
 import { getCategoryImage } from '@/lib/visuals'
 import PageSkeleton from '@/components/skeletons/PageSkeleton'
 import { useTranslations, useLocale } from 'next-intl'
@@ -157,20 +157,25 @@ export default function AIPage() {
       })
 
       const rawJson = response.text;
-      const result = JSON.parse(rawJson);
+      if (!rawJson) throw new Error('No response from AI')
+      const result = JSON.parse(rawJson) as { place_ids: Array<{ id: number; explanation: string }>; activity_ids: Array<{ id: number; explanation: string }> }
       
       // Transform into data format
-      const recPlaces = result.place_ids.map((item: { id: number; explanation: string }) => {
-        const p = placesContext.find(pc => pc.id === item.id)
-        if (!p) return null
-        return { ...p, score: 1, distance_km: 0 } // mock score/distance for UI consistency
-      }).filter(Boolean)
+      const recPlaces = result.place_ids
+        .map((item: { id: number; explanation: string }) => {
+          const p = placesContext.find(pc => pc.id === item.id)
+          if (!p) return null
+          return { ...p, score: 1, distance_km: 0 } // mock score/distance for UI consistency
+        })
+        .filter(Boolean) as RecommendationPlace[]
 
-      const recActivities = result.activity_ids.map((item: { id: number; explanation: string }) => {
-        const a = activitiesContext.find(ac => ac.id === item.id)
-        if (!a) return null
-        return { ...a, score: 1, distance_km: 0, available_slots: a.max_participants - (a.participants_count || 0), is_joined: false, place_category: 'culture' }
-      }).filter(Boolean)
+      const recActivities = result.activity_ids
+        .map((item: { id: number; explanation: string }) => {
+          const a = activitiesContext.find(ac => ac.id === item.id)
+          if (!a) return null
+          return { ...a, score: 1, distance_km: 0, available_slots: a.max_participants - (a.participants_count || 0), is_joined: false, place_category: 'culture' }
+        })
+        .filter(Boolean) as RecommendationActivity[]
 
       setData({
         recommended_places: recPlaces,
@@ -185,7 +190,7 @@ export default function AIPage() {
 
     } catch (err) {
       console.error(err)
-      setError("AI Guide is taking a break. Trying heuristic fallback...")
+      setError(t('error_timeout'))
       await submitHeuristic()
     } finally {
       setIsLoading(false)
@@ -397,9 +402,9 @@ export default function AIPage() {
                 <Sparkles size={48} />
              </div>
              <h3 className="text-lg font-bold text-slate-900">{t('empty')}</h3>
-             <p className="mt-2 max-w-sm text-sm text-slate-500">
-               Tell our AI Guide what you are looking for, or use the quick filters above to get started.
-             </p>
+              <p className="mt-2 max-w-sm text-sm text-slate-500">
+                {t('empty_desc')}
+              </p>
           </div>
         </FadeInSection>
       )}

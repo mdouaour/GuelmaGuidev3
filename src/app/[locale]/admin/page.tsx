@@ -15,7 +15,6 @@ import {
   FileText,
   MapPin,
   Pencil,
-  Plus
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import FadeInSection from '@/components/FadeInSection'
@@ -233,7 +232,7 @@ export default function AdminPage() {
           <div className="mb-8 flex items-end justify-between">
             <div>
               <h1 className="text-3xl font-extrabold text-slate-900">{t('title')}</h1>
-              <p className="mt-1 text-slate-500">Manage your platform and operations</p>
+              <p className="mt-1 text-slate-500">{t('subtitle')}</p>
             </div>
             <div className="hidden sm:block">
               <div className="flex gap-2 rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-100">
@@ -280,10 +279,10 @@ export default function AdminPage() {
               >
                 {/* Activities Section */}
                 <div className="space-y-4">
-                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">Pending Activities</h2>
+                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">{t('pending_activities_heading')}</h2>
                   {pendingActivities.length === 0 ? (
                     <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 text-center">
-                      <p className="text-slate-500">No pending activities</p>
+                      <p className="text-slate-500">{t('activities.no_pending')}</p>
                     </div>
                   ) : (
                     pendingActivities.map((activity) => (
@@ -341,10 +340,10 @@ export default function AdminPage() {
 
                 {/* Places Section */}
                 <div className="space-y-4">
-                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">Pending Place Suggestions</h2>
+                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">{t('pending_places_heading')}</h2>
                   {pendingPlaces.length === 0 ? (
                     <div className="rounded-3xl border border-dashed border-slate-200 bg-white p-12 text-center">
-                      <p className="text-slate-500">No pending place suggestions</p>
+                      <p className="text-slate-500">{t('no_pending_places')}</p>
                     </div>
                   ) : (
                     pendingPlaces.map((place) => (
@@ -360,7 +359,7 @@ export default function AdminPage() {
                                </div>
                                <div className="flex items-center gap-1">
                                  <Users size={12} />
-                                 <span>By: {place.suggested_by_name || 'Visitor'}</span>
+                                 <span>{t('by_label', { name: place.suggested_by_name || 'Visitor' })}</span>
                                </div>
                             </div>
                           </div>
@@ -369,7 +368,7 @@ export default function AdminPage() {
                             <div className="flex-1 min-w-[200px]">
                               <input
                                 type="text"
-                                placeholder="Rejection reason..."
+                                placeholder={t('activities.reason_placeholder')}
                                 value={placeRejectionReasons[place.id] || ''}
                                 onChange={(e) => setPlaceRejectionReasons(prev => ({ ...prev, [place.id]: e.target.value }))}
                                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:border-red-500 focus:outline-none"
@@ -386,8 +385,8 @@ export default function AdminPage() {
                                  onClick={() => handleApprovePlace(place.id)}
                                  className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-600 transition-colors hover:bg-emerald-100"
                                >
-                                 <CheckCircle size={18} />
-                                 Approve
+                                  <CheckCircle size={18} />
+                                  {t('activities.approve')}
                                </button>
                             </div>
                           </div>
@@ -411,7 +410,7 @@ export default function AdminPage() {
                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                    <input
                      type="text"
-                     placeholder={t('users.search')}
+                     placeholder={t('users.user')}
                      value={searchQuery}
                      onChange={(e) => setSearchQuery(e.target.value)}
                      className="w-full rounded-2xl border border-slate-100 bg-white py-4 pl-12 pr-4 text-sm shadow-sm focus:border-[#2E7D32] focus:outline-none focus:ring-1 focus:ring-[#2E7D32]"
@@ -422,7 +421,7 @@ export default function AdminPage() {
                   <table className="w-full text-left">
                     <thead className="bg-slate-50/50">
                       <tr>
-                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">{t('users.search')}</th>
+                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">{t('users.user')}</th>
                         <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">{t('users.role')}</th>
                         <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">{t('users.joined')}</th>
                         <th className="px-6 py-4 text-right"></th>
@@ -488,7 +487,7 @@ export default function AdminPage() {
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                       <input
                         type="text"
-                        placeholder="Search places..."
+                        placeholder={t('search_places')}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full rounded-2xl border border-slate-100 bg-white py-4 pl-12 pr-4 text-sm shadow-sm focus:border-[#2E7D32] focus:outline-none focus:ring-1 focus:ring-[#2E7D32]"
@@ -526,9 +525,9 @@ export default function AdminPage() {
                               className="overflow-hidden"
                             >
                                <div className="pt-6 mt-6 border-t border-slate-50">
-                                  <h4 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
-                                     Manage Photos
-                                     <span className="text-[10px] bg-emerald-100 text-[#2E7D32] px-2 py-0.5 rounded-full uppercase">Cloudflare R2</span>
+                                   <h4 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                      {t('manage_photos')}
+                                      <span className="text-[10px] bg-emerald-100 text-[#2E7D32] px-2 py-0.5 rounded-full uppercase">{t('cloudflare_r2_badge')}</span>
                                   </h4>
                                   <ImageUpload 
                                     place={p} 
@@ -556,8 +555,8 @@ export default function AdminPage() {
                 className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-white p-20 text-center"
               >
                 <AlertTriangle className="mb-4 text-amber-500" size={48} />
-                <h3 className="text-xl font-bold text-slate-900">Coming Soon</h3>
-                <p className="mt-2 text-slate-500">Reported content management is currently in development.</p>
+                <h3 className="text-xl font-bold text-slate-900">{t('coming_soon')}</h3>
+                <p className="mt-2 text-slate-500">{t('reported_desc')}</p>
               </motion.div>
             )}
 

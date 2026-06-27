@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Download, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
+import { useTranslations } from 'next-intl'
 
 export default function PWAPrompt() {
+  const t = useTranslations('pwa')
   const [showPrompt, setShowPrompt] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
@@ -72,9 +74,9 @@ export default function PWAPrompt() {
                 <Download size={24} />
               </div>
               <div>
-                <h3 className="font-bold">Add to Home Screen</h3>
+                <h3 className="font-bold">{t('title')}</h3>
                 <p className="text-xs text-emerald-50/80">
-                  Install GuelmaGuide for a faster, offline experience.
+                  {t('description')}
                 </p>
               </div>
             </div>
@@ -82,7 +84,7 @@ export default function PWAPrompt() {
               onClick={handleInstall}
               className="mt-4 w-full rounded-xl bg-white py-2 text-sm font-bold text-[#2E7D32] transition-transform active:scale-95"
             >
-              Install Now
+              {t('install')}
             </button>
           </div>
         </motion.div>

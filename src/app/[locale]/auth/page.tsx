@@ -208,7 +208,7 @@ function AuthContent() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="email@example.com"
+              placeholder={t('email_placeholder')}
               required
               className="rounded-xl border border-emerald-100 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#2E7D32] rtl:text-right"
             />
@@ -237,7 +237,7 @@ function AuthContent() {
               <span className="w-full border-t border-slate-100" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-slate-400">Or</span>
+              <span className="bg-white px-2 text-slate-400">{t('or')}</span>
             </div>
           </div>
 
@@ -248,6 +248,9 @@ function AuthContent() {
             <GoogleLogo />
             {t('continue_with_google')}
           </a>
+          <p className="mt-2 text-center text-[10px] text-slate-400">
+            {t('google_not_configured')}
+          </p>
 
           {authError ? <p className="mt-2 text-sm text-rose-600 rtl:text-right">{authError}</p> : null}
         </section>

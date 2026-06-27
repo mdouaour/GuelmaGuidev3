@@ -4,8 +4,8 @@ const locales = ['ar', 'en', 'fr'];
 
 export default getRequestConfig(async ({ locale }) => {
   // Locale might be undefined in Next.js 16 proxy context
-  // Fall back to 'en' if not provided
-  const resolvedLocale = locale && locales.includes(locale as string) ? locale : 'en';
+  // Fall back to 'ar' (Arabic) since GuelmaGuide targets Algerian/Arabic users
+  const resolvedLocale = locale && locales.includes(locale as string) ? locale : 'ar';
 
   try {
     const module = await import(`../../messages/${resolvedLocale}.json`);

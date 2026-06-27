@@ -27,26 +27,26 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   title: {
     template: '%s | GuelmaGuide',
-    default: 'GuelmaGuide | Discover the Best of Guelma, Algeria',
+    default: 'GuelmaGuide | دليل قالمة الذكي',
   },
-  description: 'Explore the historical landmarks, hidden gems, and community activities of Guelma. Powered by local insights and Gemini AI.',
-  keywords: ['Guelma', 'Algeria', 'Roman Theater Calama', 'Hammam Debagh', 'Algerian Tourism', 'Guelma Guide'],
+  description: 'استكشف المعالم التاريخية والجواهر المخفية والأنشطة المجتمعية في قالمة. مدعوم برؤى محلية وذكاء اصطناعي.',
+  keywords: ['قالمة', 'الجزائر', 'المسرح الروماني كالاما', 'حمام دباغ', 'السياحة الجزائرية', 'دليل قالمة', 'Guelma', 'Algeria'],
   authors: [{ name: 'Guelma Community' }],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://guelma.guide'),
   alternates: {
     canonical: '/',
     languages: {
-      'en-US': '/en',
       'ar-DZ': '/ar',
       'fr-FR': '/fr',
+      'en-US': '/en',
     },
   },
   openGraph: {
-    title: 'GuelmaGuide | Smart discovery in Guelma',
-    description: 'Explore places and activities in Guelma with a lightweight AI guide.',
+    title: 'GuelmaGuide | دليل قالمة الذكي',
+    description: 'استكشف الأماكن والأنشطة في قالمة مع دليل ذكي خفيف.',
     url: process.env.NEXT_PUBLIC_APP_URL || 'https://guelma.guide',
     siteName: 'GuelmaGuide',
-    locale: 'en_US',
+    locale: 'ar_DZ',
     type: 'website',
   },
   robots: {
@@ -77,7 +77,7 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
   
-  if (!['en', 'ar', 'fr'].includes(locale)) {
+  if (!['ar', 'en', 'fr'].includes(locale)) {
     notFound();
   }
 

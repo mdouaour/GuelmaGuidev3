@@ -10,6 +10,34 @@ EARTH_RADIUS_KM = 6371.0
 MIN_COS_LATITUDE = 1e-6
 
 
+def _is_postgresql(db: Session) -> bool:
+    """Check if we are connected to PostgreSQL (vs SQLite for dev/testing)."""
+    return db.bind is not None and db.bind.dialect.name == "postgresql"
+
+
+def _build_keyword_filter(keyword: str) -> or_:
+    """Build a cross-database keyword filter — FTS on PostgreSQL, ILIKE fallback elsewhere."""
+    normalized = keyword.strip()
+    return or_(
+        Place.name.ilike(f"%{normalized}%"),
+        Place.name_ar.ilike(f"%{normalized}%"),
+        Place.name_en.ilike(f"%{normalized}%"),
+        Place.description.ilike(f"%{normalized}%"),
+        Place.description_ar.ilike(f"%{normalized}%"),
+        Place.description_en.ilike(f"%{normalized}%"),
+    )
+
+
+def _apply_postgres_fts(
+    db: Session, keyword: str,
+) -> tuple:
+    """Apply PostgreSQL full-text search, returning (filter, rank_column, order_by)."""
+    query = func.plainto_tsquery("french", keyword)
+    fts_filter = Place.search_vector.op("@@")(query)
+    rank = func.ts_rank(Place.search_vector, query).label("rank")
+    return fts_filter, rank, [rank.desc(), Place.created_at.desc()]
+
+
 def list_places(
     db: Session,
     *,
@@ -31,11 +59,11 @@ def list_places(
     if keyword:
         normalized_keyword = keyword.strip()
         if normalized_keyword:
-            query = func.plainto_tsquery('french', normalized_keyword)
-            filters.append(Place.search_vector.op('@@')(query))
-            # Rank by relevance
-            rank = func.ts_rank(Place.search_vector, query).label('rank')
-            order_by_clause = [rank.desc(), Place.created_at.desc()]
+            if _is_postgresql(db):
+                fts_filter, _, order_by_clause = _apply_postgres_fts(db, normalized_keyword)
+                filters.append(fts_filter)
+            else:
+                filters.append(_build_keyword_filter(normalized_keyword))
 
     if distance_km is not None:
         if latitude is None or longitude is None:
@@ -59,10 +87,9 @@ def list_places(
         # When distance filter is present, we handle sorting and pagination differently
         statement = select(Place).where(*filters)
         if keyword:
-            # We need the rank in the columns if we want to sort by it in memory or query
-            query = func.plainto_tsquery('french', keyword.strip())
-            rank = func.ts_rank(Place.search_vector, query).label('rank')
-            statement = select(Place, rank).where(*filters)
+            if _is_postgresql(db):
+                _, rank, _ = _apply_postgres_fts(db, keyword.strip())
+                statement = select(Place, rank).where(*filters)
             candidates = list(db.execute(statement).all())
         else:
             candidates = [(p,) for p in db.scalars(statement)]

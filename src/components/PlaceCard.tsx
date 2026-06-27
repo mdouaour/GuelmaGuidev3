@@ -26,8 +26,11 @@ export default function PlaceCard({ place }: { place: Place }) {
     setIsLoading(true)
     const method = isSaved ? 'DELETE' : 'POST'
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/wishlists/${place.id}`, {
+      const response = await fetch(`/api/wishlists/${place.id}`, {
         method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
       if (response.ok) {
         setIsSaved(!isSaved)

@@ -6,7 +6,7 @@ from app.models import User, UserRole
 
 def _setup_organizer_and_get_token(client: TestClient, db_session: Session) -> str:
     email = "organizer@example.com"
-    password = "Password1!"
+    password = "SecureP@ss123!"
     register_response = client.post(
         "/api/v1/auth/register",
         json={"email": email, "password": password},

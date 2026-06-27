@@ -6,12 +6,12 @@ from sqlalchemy.orm import Session
 from app.models import User, UserRole
 
 
-def _register_user(client: TestClient, email: str, password: str = "Password1!") -> None:
+def _register_user(client: TestClient, email: str, password: str = "SecureP@ss123!") -> None:
     response = client.post("/api/v1/auth/register", json={"email": email, "password": password})
     assert response.status_code == 201
 
 
-def _login_user(client: TestClient, email: str, password: str = "Password1!") -> str:
+def _login_user(client: TestClient, email: str, password: str = "SecureP@ss123!") -> str:
     login_response = client.post("/api/v1/auth/login", json={"email": email, "password": password})
     assert login_response.status_code == 200
     return login_response.json()["access_token"]

@@ -7,12 +7,12 @@ from app.models import User, UserRole
 
 
 def _register_user(client: TestClient, email: str) -> None:
-    response = client.post("/api/v1/auth/register", json={"email": email, "password": "Password1!"})
+    response = client.post("/api/v1/auth/register", json={"email": email, "password": "SecureP@ss123!"})
     assert response.status_code == 201
 
 
 def _login_user(client: TestClient, email: str) -> str:
-    login = client.post("/api/v1/auth/login", json={"email": email, "password": "Password1!"})
+    login = client.post("/api/v1/auth/login", json={"email": email, "password": "SecureP@ss123!"})
     assert login.status_code == 200
     return login.json()["access_token"]
 

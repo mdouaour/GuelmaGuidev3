@@ -12,7 +12,7 @@ import { firstImageOrCategory } from '@/lib/visuals'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { getLocalizedName, getLocalizedDescription } from '@/lib/localization'
-import { Heart, Star, Clock, MapPin, StarHalf } from 'lucide-react'
+import { Heart, Star, Clock, MapPin } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import ReviewForm from '@/components/ReviewForm'
 import { formatDistanceToNow } from 'date-fns'
@@ -95,8 +95,11 @@ export default function PlaceDetailsClient({ initialPlace, initialActivities }: 
     setIsWishlistLoading(true)
     const method = isSaved ? 'DELETE' : 'POST'
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/wishlists/${place.id}`, {
+      const response = await fetch(`/api/wishlists/${place.id}`, {
         method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
       if (response.ok) {
         setIsSaved(!isSaved)

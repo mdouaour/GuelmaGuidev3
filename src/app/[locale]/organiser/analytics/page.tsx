@@ -89,8 +89,8 @@ export default function OrganiserAnalyticsPage() {
                   <Crown size={20} />
                </div>
                <div className="text-xs">
-                  <p className="font-bold text-slate-900">PRO Organiser</p>
-                  <p className="text-slate-400">Active membership</p>
+                   <p className="font-bold text-slate-900">{t('pro_badge')}</p>
+                   <p className="text-slate-400">{t('active_membership')}</p>
                </div>
             </div>
          </div>
@@ -137,7 +137,7 @@ export default function OrganiserAnalyticsPage() {
             >
                <div className="flex-1 min-w-[200px]">
                   <h3 className="font-bold text-slate-900 group-hover:text-[#2E7D32] transition-colors">{item.title}</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">ID: {item.activity_id}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{t('id_label', { id: item.activity_id })}</p>
                </div>
                
                <div className="flex items-center gap-8">

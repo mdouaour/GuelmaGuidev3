@@ -11,10 +11,15 @@ from app.db.base_class import TimestampedBase
 
 if TYPE_CHECKING:
     from app.models.activity import Activity, ActivityRegistration
-    from app.models.notification import Notification
+    from app.models.audio_guide import AudioGuide
     from app.models.auth_token import RefreshToken
-    from app.models.wishlist import Wishlist
+    from app.models.event import Event
+    from app.models.event_registration import EventRegistration
+    from app.models.guide import Guide
+    from app.models.notification import Notification
     from app.models.review import PlaceReview
+    from app.models.user_badge import UserBadge
+    from app.models.wishlist import Wishlist
 
 
 class UserRole(str, Enum):
@@ -70,4 +75,16 @@ class User(TimestampedBase):
     )
     place_reviews: Mapped[list["PlaceReview"]] = relationship(
         "PlaceReview", back_populates="user", cascade="all, delete-orphan"
+    )
+    badges: Mapped[list["UserBadge"]] = relationship(
+        "UserBadge", back_populates="user", cascade="all, delete-orphan"
+    )
+    guides: Mapped[list["Guide"]] = relationship(
+        "Guide", back_populates="author", cascade="all, delete-orphan"
+    )
+    organized_events: Mapped[list["Event"]] = relationship(
+        "Event", back_populates="organizer"
+    )
+    event_registrations: Mapped[list["EventRegistration"]] = relationship(
+        "EventRegistration", back_populates="user", cascade="all, delete-orphan"
     )

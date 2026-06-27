@@ -8,7 +8,7 @@ def test_register_returns_message_without_token(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email"):
         register_response = client.post(
             "/api/v1/auth/register",
-            json={"email": "user@example.com", "password": "Password1!"},
+            json={"email": "user@example.com", "password": "SecureP@ss123!"},
         )
     assert register_response.status_code == 201
     body = register_response.json()
@@ -22,12 +22,12 @@ def test_login_and_me_flow(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email"):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "flow@example.com", "password": "Password1!"},
+            json={"email": "flow@example.com", "password": "SecureP@ss123!"},
         )
 
     login_response = client.post(
         "/api/v1/auth/login",
-        json={"email": "flow@example.com", "password": "Password1!"},
+        json={"email": "flow@example.com", "password": "SecureP@ss123!"},
     )
     assert login_response.status_code == 200
     token = login_response.json()["access_token"]
@@ -40,7 +40,7 @@ def test_login_and_me_flow(client: TestClient) -> None:
 
 
 def test_register_duplicate_email_returns_400(client: TestClient) -> None:
-    payload = {"email": "duplicate@example.com", "password": "Password1!"}
+    payload = {"email": "duplicate@example.com", "password": "SecureP@ss123!"}
     with patch("app.api.auth.send_verification_email"):
         assert client.post("/api/v1/auth/register", json=payload).status_code == 201
     duplicate = client.post("/api/v1/auth/register", json=payload)
@@ -51,11 +51,11 @@ def test_login_with_wrong_password_returns_401(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email"):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "wrong-pass@example.com", "password": "Password1!"},
+            json={"email": "wrong-pass@example.com", "password": "SecureP@ss123!"},
         )
     response = client.post(
         "/api/v1/auth/login",
-        json={"email": "wrong-pass@example.com", "password": "WrongPassword1!"},
+        json={"email": "wrong-pass@example.com", "password": "WrongSecureP@ss123!"},
     )
     assert response.status_code == 401
 
@@ -75,7 +75,7 @@ def test_verify_email_happy_path(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email", side_effect=fake_send_verification):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "verify@example.com", "password": "Password1!"},
+            json={"email": "verify@example.com", "password": "SecureP@ss123!"},
         )
 
     verification_token = captured["token"]
@@ -94,7 +94,7 @@ def test_verify_email_happy_path(client: TestClient) -> None:
     # After verification, /me must show email_verified = True.
     login = client.post(
         "/api/v1/auth/login",
-        json={"email": "verify@example.com", "password": "Password1!"},
+        json={"email": "verify@example.com", "password": "SecureP@ss123!"},
     )
     token = login.json()["access_token"]
     me = client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
@@ -117,7 +117,7 @@ def test_verify_email_token_deleted_on_use(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email", side_effect=fake_send_verification):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "once-verify@example.com", "password": "Password1!"},
+            json={"email": "once-verify@example.com", "password": "SecureP@ss123!"},
         )
 
     verification_token = captured["token"]
@@ -154,7 +154,7 @@ def test_resend_verification_sends_email_for_unverified_user(client: TestClient)
     with patch("app.api.auth.send_verification_email"):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "resend@example.com", "password": "Password1!"},
+            json={"email": "resend@example.com", "password": "SecureP@ss123!"},
         )
 
     sent: list = []
@@ -179,7 +179,7 @@ def test_resend_verification_skips_already_verified_user(client: TestClient) -> 
     with patch("app.api.auth.send_verification_email", side_effect=fake_send_verification):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "verified@example.com", "password": "Password1!"},
+            json={"email": "verified@example.com", "password": "SecureP@ss123!"},
         )
 
     # Verify the user first.
@@ -229,7 +229,7 @@ def test_request_password_reset_stores_token_and_sends_email(client: TestClient)
     with patch("app.api.auth.send_verification_email"):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "reset-user@example.com", "password": "Password1!"},
+            json={"email": "reset-user@example.com", "password": "SecureP@ss123!"},
         )
 
     captured: dict = {}
@@ -265,7 +265,7 @@ def test_reset_password_with_valid_token(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email"):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "full-reset@example.com", "password": "OldPassword1!"},
+            json={"email": "full-reset@example.com", "password": "OldSecureP@ss123!"},
         )
 
     stored: dict = {}
@@ -294,7 +294,7 @@ def test_reset_password_with_valid_token(client: TestClient) -> None:
     ):
         response = client.post(
             "/api/v1/auth/reset-password",
-            json={"token": reset_token, "new_password": "NewPassword1!"},
+            json={"token": reset_token, "new_password": "NewSecureP@ss123!"},
         )
 
     assert response.status_code == 200
@@ -305,7 +305,7 @@ def test_reset_password_with_valid_token(client: TestClient) -> None:
     # Verify the new password works.
     login = client.post(
         "/api/v1/auth/login",
-        json={"email": "full-reset@example.com", "password": "NewPassword1!"},
+        json={"email": "full-reset@example.com", "password": "NewSecureP@ss123!"},
     )
     assert login.status_code == 200
 
@@ -315,7 +315,7 @@ def test_reset_password_with_expired_or_used_token(client: TestClient) -> None:
     with patch("app.api.auth.get_str", return_value=None):
         response = client.post(
             "/api/v1/auth/reset-password",
-            json={"token": "some.fake.token", "new_password": "NewPassword1!"},
+            json={"token": "some.fake.token", "new_password": "NewSecureP@ss123!"},
         )
     assert response.status_code == 400
 
@@ -325,7 +325,7 @@ def test_reset_password_token_deleted_on_use(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email"):
         client.post(
             "/api/v1/auth/register",
-            json={"email": "once-reset@example.com", "password": "Password1!"},
+            json={"email": "once-reset@example.com", "password": "SecureP@ss123!"},
         )
 
     stored: dict = {}
@@ -354,7 +354,7 @@ def test_reset_password_token_deleted_on_use(client: TestClient) -> None:
     ):
         r1 = client.post(
             "/api/v1/auth/reset-password",
-            json={"token": reset_token, "new_password": "Password2!"},
+            json={"token": reset_token, "new_password": "NewPassword2!"},
         )
     assert r1.status_code == 200
     assert len(delete_calls) == 1

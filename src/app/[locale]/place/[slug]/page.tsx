@@ -1,4 +1,5 @@
 import { type Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import PlaceDetailsClient from '@/components/PlaceDetailsClient'
 import { serverGetPlace, serverGetPlaces, serverGetActivities } from '@/lib/server-api'
@@ -45,8 +46,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const data = await getPlaceData(slug, locale)
   
   if (!data) {
+    const t = await getTranslations({ locale, namespace: 'metadata' })
     return {
-      title: 'Place Not Found | GuelmaGuide',
+      title: t('place_not_found'),
     }
   }
 

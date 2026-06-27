@@ -51,7 +51,11 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <FadeInSection>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="flex flex-col items-center text-center">
           <div className="relative group">
             <div className="h-32 w-32 overflow-hidden rounded-[40px] border-4 border-white bg-slate-100 shadow-2xl transition-transform group-hover:scale-105">
@@ -83,16 +87,16 @@ export default function ProfilePage() {
               </span>
               {user.organizer_verified && (
                 <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-700 border border-emerald-100">
-                  <ShieldCheck size={12} /> Verified
+                  <ShieldCheck size={12} /> {t('verified_badge')}
                 </span>
               )}
               <span className="flex items-center gap-1 rounded-full bg-amber-50 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-amber-700 border border-amber-100">
-                <BarChart3 size={12} /> {user.points} Points
+                <BarChart3 size={12} /> {t('points_label', { points: user.points })}
               </span>
             </div>
           </div>
         </div>
-      </FadeInSection>
+      </motion.div>
 
       <div className="mt-16 grid gap-8 md:grid-cols-2">
         <div className="space-y-8">
@@ -116,7 +120,7 @@ export default function ProfilePage() {
                <div className={`p-8 ${user.organiser_pro ? 'bg-slate-900 text-white' : 'bg-emerald-600 text-white'}`}>
                   <div className="flex items-center justify-between gap-4 mb-6">
                      <h2 className={`text-[10px] font-black uppercase tracking-widest ${user.organiser_pro ? 'text-amber-400' : 'text-emerald-100'}`}>
-                        {user.organiser_pro ? 'Organiser Pro' : 'Grow your events'}
+                        {user.organiser_pro ? t('organiser_pro_label') : t('organiser_pro_desc')}
                      </h2>
                      <Crown size={24} className={user.organiser_pro ? 'text-amber-500' : 'text-emerald-300'} />
                   </div>
@@ -125,22 +129,22 @@ export default function ProfilePage() {
                      {user.organiser_pro ? (
                        <>
                           <div className="mb-6">
-                             <p className="text-2xl font-black mb-1">Status: Active</p>
-                             <p className="text-xs text-slate-400">Benefits valid until {new Date(user.pro_expires_at!).toLocaleDateString()}</p>
+                           <p className="text-2xl font-black mb-1">{t('status_active')}</p>
+                              <p className="text-xs text-slate-400">{t('benefits_until', { date: new Date(user.pro_expires_at!).toLocaleDateString() })}</p>
                           </div>
                           <Link href="/organiser/analytics" className="flex items-center justify-between rounded-2xl bg-white/10 p-4 font-bold transition-all hover:bg-white/20 active:scale-95">
-                             <span className="flex items-center gap-3"><BarChart3 size={20} /> View Insights</span>
+                              <span className="flex items-center gap-3"><BarChart3 size={20} /> {t('view_insights')}</span>
                              <ExternalLink size={16} />
                           </Link>
-                          <Link href="/organiser/pro" className="flex items-center justify-center p-3 text-xs font-bold text-slate-400 hover:text-white transition-colors">
-                             Manage Subscription
-                          </Link>
+                           <Link href="/organiser/pro" className="flex items-center justify-center p-3 text-xs font-bold text-slate-400 hover:text-white transition-colors">
+                              {t('manage_subscription')}
+                           </Link>
                        </>
                      ) : (
                        <>
-                          <p className="text-lg font-bold leading-tight mb-6">Get unlimited activities, priority listing and advanced analytics.</p>
-                          <Link href="/organiser/pro" className="flex items-center justify-between rounded-2xl bg-white p-4 font-bold text-emerald-700 shadow-lg shadow-emerald-900/20 transition-all hover:translate-y-[-2px] active:scale-95">
-                             <span className="flex items-center gap-3"><Crown size={20} /> Upgrade to Pro</span>
+                           <p className="text-lg font-bold leading-tight mb-6">{t('upgrade_pro_desc')}</p>
+                           <Link href="/organiser/pro" className="flex items-center justify-between rounded-2xl bg-white p-4 font-bold text-emerald-700 shadow-lg shadow-emerald-900/20 transition-all hover:translate-y-[-2px] active:scale-95">
+                              <span className="flex items-center gap-3"><Crown size={20} /> {t('upgrade_pro')}</span>
                              <ExternalLink size={16} />
                           </Link>
                        </>
@@ -158,8 +162,8 @@ export default function ProfilePage() {
                 <Calendar size={28} />
               </div>
               <div>
-                <p className="font-black text-slate-900 group-hover:text-[#2E7D32] transition-colors">My Activities</p>
-                <p className="text-xs text-slate-500">Tickets and registrations</p>
+                <p className="font-black text-slate-900 group-hover:text-[#2E7D32] transition-colors">{t('my_activities_link')}</p>
+                <p className="text-xs text-slate-500">{t('my_activities_desc')}</p>
               </div>
             </div>
             <ExternalLink size={18} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
@@ -171,8 +175,8 @@ export default function ProfilePage() {
                 <Settings size={28} />
               </div>
               <div>
-                <p className="font-black text-slate-900 group-hover:text-[#2E7D32] transition-colors">Manage Events</p>
-                <p className="text-xs text-slate-500">Create or edit your activities</p>
+                <p className="font-black text-slate-900 group-hover:text-[#2E7D32] transition-colors">{t('manage_events_link')}</p>
+                <p className="text-xs text-slate-500">{t('manage_events_desc')}</p>
               </div>
             </div>
             <ExternalLink size={18} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
@@ -193,17 +197,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
-  )
-}
-
-function FadeInSection({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      {children}
-    </motion.div>
   )
 }

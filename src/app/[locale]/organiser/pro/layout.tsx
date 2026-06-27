@@ -1,8 +1,14 @@
 import { type Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = {
-  title: 'Organiser Pro | GuelmaGuide',
-  description: 'Upgrade to GuelmaGuide Pro to unlock unlimited activities, priority listing, and advanced analytics for your events in Guelma.',
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'metadata' })
+
+  return {
+    title: t('organiser_pro_title'),
+    description: t('organiser_pro_desc'),
+  }
 }
 
 export default function OrganiserProLayout({ children }: { children: React.ReactNode }) {

@@ -18,7 +18,8 @@ import { getActivityImage } from '@/lib/visuals'
 import { useAuth } from '@/context/AuthContext'
 import { Crown } from 'lucide-react'
 import ActivitySkeleton from '@/components/skeletons/ActivitySkeleton'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { getLocalizedName } from '@/lib/localization'
 import { Link } from '@/i18n/navigation'
 
 const limit = 10
@@ -32,6 +33,8 @@ function toIsoDateTime(value: string) {
 export default function ActivitiesClient({ initialActivities, initialTotal }: { initialActivities: Activity[], initialTotal: number }) {
   const t = useTranslations('activities')
   const authT = useTranslations('auth')
+  const discoverT = useTranslations('discover')
+  const locale = useLocale()
   const { user } = useAuth()
   const [dateFilter, setDateFilter] = useState('')
   const [placeFilter, setPlaceFilter] = useState('')
@@ -44,6 +47,7 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
   const [joinedIds, setJoinedIds] = useState<number[]>([])
   const [isSyncingJoined, setIsSyncingJoined] = useState(false)
   const [joiningActivityId, setJoiningActivityId] = useState<number | null>(null)
+  const [joinErrorId, setJoinErrorId] = useState<number | null>(null)
 
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [availablePlaces, setAvailablePlaces] = useState<Place[]>([])
@@ -137,8 +141,9 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
   }, [user])
 
   const toggleJoin = async (activityId: number) => {
+    setJoinErrorId(null)
     if (!user) {
-      setError(t('login_to_join'))
+      setJoinErrorId(activityId)
       return
     }
     try {
@@ -283,7 +288,7 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
               </option>
               {availablePlaces.map((place) => (
                 <option key={place.id} value={String(place.id)}>
-                  {place.name}
+                  {getLocalizedName(place, locale)}
                 </option>
               ))}
             </select>
@@ -345,7 +350,7 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
             </option>
             {availablePlaces.map((place) => (
               <option key={place.id} value={String(place.id)}>
-                {place.name}
+                {getLocalizedName(place, locale)}
               </option>
             ))}
           </select>
@@ -442,6 +447,11 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
                           ? `${t('btn_get_ticket')} — ${activity.price_per_ticket} ${activity.currency}`
                           : t('btn_join')}
                   </button>
+                  {joinErrorId === activity.id && (
+                    <p className="mt-1 text-xs text-rose-600 font-medium">
+                      {t('login_to_join')}
+                    </p>
+                  )}
                 </div>
               </article>
             </FadeInSection>
@@ -451,7 +461,7 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
 
       <div className="tour-card mt-6 flex items-center justify-between p-4 text-sm text-slate-700">
         <p>
-          {useTranslations('discover')('page')} {page} / {totalPages}
+          {discoverT('page')} {page} / {totalPages}
         </p>
         <div className="flex gap-2">
           <button
@@ -459,14 +469,14 @@ export default function ActivitiesClient({ initialActivities, initialTotal }: { 
             onClick={() => setPage((previous) => Math.max(1, previous - 1))}
             className="rounded-xl border border-emerald-200 px-3 py-2 disabled:opacity-50"
           >
-            {useTranslations('discover')('prev')}
+            {discoverT('prev')}
           </button>
           <button
             disabled={page >= totalPages}
             onClick={() => setPage((previous) => Math.min(totalPages, previous + 1))}
             className="rounded-xl border border-emerald-200 px-3 py-2 disabled:opacity-50"
           >
-            {useTranslations('discover')('next')}
+            {discoverT('next')}
           </button>
         </div>
       </div>

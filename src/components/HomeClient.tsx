@@ -94,7 +94,7 @@ export default function HomeClient({ initialPlaces, initialActivities }: HomeCli
           <section className="rtl:text-right">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-slate-900">
-                {locale === 'ar' ? 'من أجلك ✨' : locale === 'fr' ? 'Pour vous ✨' : 'For you ✨'}
+                {t('for_you')}
               </h2>
               <div className="flex gap-1">
                 {userInterests.slice(0, 3).map(interest => (

@@ -4,15 +4,18 @@ from enum import Enum
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, JSON, CheckConstraint, Float, Index, Integer, String, Text
-from sqlalchemy.dialects.postgresql import TSVECTOR
+from app.db.types import TSVector
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base_class import TimestampedBase
 
 if TYPE_CHECKING:
     from app.models.activity import Activity
-    from app.models.wishlist import Wishlist
+    from app.models.audio_guide import AudioGuide
+    from app.models.event import Event
+    from app.models.guide_place import GuidePlace
     from app.models.review import PlaceReview
+    from app.models.wishlist import Wishlist
 
 
 class PlaceCategory(str, Enum):
@@ -48,8 +51,15 @@ class Place(TimestampedBase):
     featured: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default="0")
     rating_avg: Mapped[float] = mapped_column(Float, default=0.0, nullable=False, server_default="0.0")
     rating_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False, server_default="0")
-    search_vector: Mapped[str | None] = mapped_column(TSVECTOR, nullable=True)
+    search_vector: Mapped[str | None] = mapped_column(TSVector, nullable=True)
 
     activities: Mapped[list["Activity"]] = relationship(back_populates="place")
     wishlisted_by: Mapped[list["Wishlist"]] = relationship("Wishlist", back_populates="place", cascade="all, delete-orphan")
     reviews: Mapped[list["PlaceReview"]] = relationship("PlaceReview", back_populates="place", cascade="all, delete-orphan")
+    guide_places: Mapped[list["GuidePlace"]] = relationship(
+        "GuidePlace", back_populates="place", cascade="all, delete-orphan"
+    )
+    events: Mapped[list["Event"]] = relationship("Event", back_populates="place")
+    audio_guides: Mapped[list["AudioGuide"]] = relationship(
+        "AudioGuide", back_populates="place", cascade="all, delete-orphan"
+    )

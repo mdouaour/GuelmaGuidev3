@@ -45,8 +45,8 @@ export default function CommunityClient() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <FadeInSection>
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-4">Guelma Community</h1>
-          <p className="text-slate-600 max-w-2xl mx-auto">The heart of GuelmaGuide. Meet the contributors who make this heritage alive and share your thoughts with the evolution team.</p>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-4">{t('title')}</h1>
+          <p className="text-slate-600 max-w-2xl mx-auto">{t('hero_desc')}</p>
         </div>
       </FadeInSection>
 
@@ -57,12 +57,12 @@ export default function CommunityClient() {
             <div className="p-3 bg-amber-50 rounded-2xl text-amber-600">
                <Award size={24} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">Top Contributors</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{t('leaderboard')}</h2>
           </div>
 
           <div className="tour-card overflow-hidden">
             {isLoading ? (
-              <div className="p-8 text-center animate-pulse text-slate-400">Loading contributors...</div>
+              <div className="p-8 text-center animate-pulse text-slate-400">{t('loading')}</div>
             ) : (
               <div className="divide-y divide-slate-50">
                 {leaderboard.map((entry, index) => (
@@ -88,7 +88,7 @@ export default function CommunityClient() {
                     </div>
                     <div className="text-right">
                        <p className="text-sm font-black text-[#2E7D32]">{entry.points}</p>
-                       <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Points</p>
+                       <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">{t('points')}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -103,11 +103,11 @@ export default function CommunityClient() {
             <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600">
                <MessageSquare size={24} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">Contact Evolution Team</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{t('feedback_title')}</h2>
           </div>
 
           <div className="tour-card p-8 bg-white">
-            <p className="text-sm text-slate-600 mb-8">Have ideas for improvement? Found a bug? Or want to partner with us? Our community-driven roadmap depends on you.</p>
+            <p className="text-sm text-slate-600 mb-8">{t('feedback_desc')}</p>
             
             {feedbackSuccess ? (
               <motion.div 
@@ -115,28 +115,28 @@ export default function CommunityClient() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="bg-emerald-50 border border-emerald-100 p-6 rounded-3xl text-center"
               >
-                <p className="text-emerald-700 font-bold mb-1">Message Received!</p>
-                <p className="text-emerald-600 text-xs">Thank you for helping Guelma evolve. We&apos;ll review your feedback.</p>
+                <p className="text-emerald-700 font-bold mb-1">{t('feedback_received')}</p>
+                <p className="text-emerald-600 text-xs">{t('feedback_received_desc')}</p>
               </motion.div>
             ) : (
               <form onSubmit={handleFeedback} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Subject</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">{t('subject_label')}</label>
                   <input 
                     required
                     value={subject}
                     onChange={e => setSubject(e.target.value)}
-                    placeholder="e.g. New Feature Idea"
+                    placeholder={t('subject_placeholder')}
                     className="w-full rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm focus:border-[#2E7D32] focus:outline-none"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Your Message</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">{t('message_label')}</label>
                   <textarea 
                     required
                     value={message}
                     onChange={e => setMessage(e.target.value)}
-                    placeholder="Tell us what's on your mind..."
+                    placeholder={t('message_placeholder')}
                     rows={5}
                     className="w-full rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm focus:border-[#2E7D32] focus:outline-none resize-none"
                   />
@@ -146,7 +146,7 @@ export default function CommunityClient() {
                   disabled={isSending || !user}
                   className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold transition-all hover:bg-slate-800 active:scale-[0.98] disabled:opacity-50"
                 >
-                  {isSending ? 'Sending...' : user ? 'Send Feedback' : 'Login to Send Feedback'}
+                  {isSending ? t('sending') : user ? t('send_feedback') : t('login_to_send')}
                 </button>
               </form>
             )}
@@ -160,7 +160,7 @@ export default function CommunityClient() {
             <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600">
                <Trophy size={24} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">Evolution Roadmap</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{t('roadmap_title')}</h2>
          </div>
          <div className="grid gap-6 sm:grid-cols-3">
             {[
@@ -185,9 +185,9 @@ export default function CommunityClient() {
             <div className="absolute inset-0 opacity-10 bg-[url('https://picsum.photos/seed/guelma_market/1200/400')] bg-cover bg-center" />
             <div className="relative p-12 text-center lg:text-left flex flex-col lg:flex-row items-center justify-between gap-8">
                <div className="max-w-xl">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-2">Community Partner Space</p>
-                  <h3 className="text-3xl font-black mb-4">Promote your Heritage Business</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">Are you a local hotelier, artisan, or restaurateur in Guelma? Partner with us to appear in the &quot;Recommended by Community&quot; lists and reach thousands of explorers.</p>
+                   <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-2">{t('partner_title')}</p>
+                   <h3 className="text-3xl font-black mb-4">{t('partner_heading')}</h3>
+                   <p className="text-slate-400 text-sm leading-relaxed">{t('partner_desc')}</p>
                </div>
                <button 
                  onClick={() => {
@@ -196,7 +196,7 @@ export default function CommunityClient() {
                  }}
                  className="whitespace-nowrap px-8 py-4 bg-[#2E7D32] hover:bg-[#286a2b] text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-emerald-900/40"
                >
-                 Inquire for Ads
+                 {t('partner_cta')}
                </button>
             </div>
          </div>

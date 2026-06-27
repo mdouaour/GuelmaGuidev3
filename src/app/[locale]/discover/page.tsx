@@ -1,16 +1,18 @@
 import { type Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { serverGetPlaces } from '@/lib/server-api'
 import DiscoverClient from '@/components/DiscoverClient'
 
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { locale } = await params
   const sParams = await searchParams
+  const t = await getTranslations({ locale, namespace: 'metadata' })
   
   const title = sParams.keyword 
-    ? `${sParams.keyword} in Guelma | Discover | GuelmaGuide` 
-    : 'Discover Places in Guelma | GuelmaGuide'
+    ? t('discover_search_title', { keyword: sParams.keyword }) 
+    : t('discover_title')
   
-  const description = 'Search and filter historical sites, natural wonders, and local favorites in Guelma. Use our interactive map to find your next destination.'
+  const description = t('discover_desc')
 
   return {
     title,

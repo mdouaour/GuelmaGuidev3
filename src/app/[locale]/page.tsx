@@ -1,12 +1,14 @@
 import { type Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { serverGetActivities, serverGetPlaces } from '@/lib/server-api'
 import HomeClient from '@/components/HomeClient'
 import { type PaginatedResponse, type Place, type Activity } from '@/lib/api'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
-  const title = 'GuelmaGuide | Discover Guelma Heritage & Nature'
-  const description = 'Explore the best local spots, thermal baths, and community activities in Guelma, Algeria. Your interactive smart guide to the city.'
+  const t = await getTranslations({ locale, namespace: 'metadata' })
+  const title = t('home_title')
+  const description = t('home_desc')
 
   return {
     title,

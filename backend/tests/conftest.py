@@ -17,7 +17,20 @@ os.environ["RATE_LIMIT_AI_PER_WINDOW"] = "1000"
 from app.db.base_class import Base
 from app.db.session import get_db
 from app.main import app
-from app.models import Activity, ActivityRegistration, Place, User
+from app.models import (
+    Activity,
+    ActivityRegistration,
+    AudioGuide,
+    Badge,
+    Event,
+    EventRegistration,
+    Guide,
+    GuidePlace,
+    Place,
+    PlaceReview,
+    User,
+    UserBadge,
+)
 
 TEST_DATABASE_URL = "sqlite+pysqlite:///:memory:"
 engine = create_engine(
@@ -39,7 +52,22 @@ def create_test_database() -> Generator[None, None, None]:
 def db_session() -> Generator[Session, None, None]:
     session = TestingSessionLocal()
     try:
-        for model in (ActivityRegistration, Activity, Place, User):
+        # Delete in dependency order to respect FK constraints
+        # (FKs may not cascade on SQLite without PRAGMA)
+        for model in (
+            ActivityRegistration,
+            EventRegistration,
+            PlaceReview,
+            Activity,
+            GuidePlace,
+            Event,
+            Guide,
+            AudioGuide,
+            UserBadge,
+            Badge,
+            Place,
+            User,
+        ):
             session.execute(delete(model))
         session.commit()
         yield session

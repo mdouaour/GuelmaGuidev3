@@ -1,10 +1,12 @@
 import { type Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import CommunityClient from '@/components/CommunityClient'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
-  const title = 'Evolution & Community | GuelmaGuide'
-  const description = 'Join the team building the future of Guelma digital heritage. See top contributors and provide your feedback.'
+  const t = await getTranslations({ locale, namespace: 'metadata' })
+  const title = t('community_title')
+  const description = t('community_desc')
 
   return {
     title,

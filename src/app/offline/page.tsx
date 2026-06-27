@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react'
 import { WifiOff, MapPin, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import FadeInSection from '@/components/FadeInSection'
 import { type Place } from '@/lib/api'
 
 export default function OfflinePage() {
+  const t = useTranslations('offline')
   const [cachedPlaces, setCachedPlaces] = useState<Place[]>([])
 
   useEffect(() => {
@@ -29,15 +31,15 @@ export default function OfflinePage() {
         <div className="mb-6 rounded-full bg-slate-100 p-8 text-slate-400">
           <WifiOff size={64} />
         </div>
-        <h1 className="text-3xl font-black text-slate-900">You&apos;re Offline</h1>
+        <h1 className="text-3xl font-black text-slate-900">{t('title')}</h1>
         <p className="mt-2 text-slate-500">
-          We couldn&apos;t connect to the internet, but here&apos;s what we have saved for you.
+          {t('description')}
         </p>
 
         {cachedPlaces.length > 0 ? (
           <div className="mt-12 w-full max-w-md space-y-4">
             <h2 className="text-left text-sm font-bold uppercase tracking-wider text-slate-400">
-              Recently Visited
+              {t('recently_visited')}
             </h2>
             {cachedPlaces.map((place) => (
               <div
@@ -61,7 +63,7 @@ export default function OfflinePage() {
               href="/"
               className="inline-flex rounded-full bg-[#2E7D32] px-8 py-3 font-bold text-white shadow-lg transition-transform active:scale-95"
             >
-              Try Homepage
+              {t('try_homepage')}
             </Link>
           </div>
         )}

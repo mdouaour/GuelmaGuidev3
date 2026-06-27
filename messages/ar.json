@@ -6,14 +6,37 @@
     "ai_guide": "الدليل الذكي",
     "home": "الرئيسية",
     "profile": "الملف الشخصي",
-    "community": "المجتمع"
+    "community": "المجتمع",
+    "explore": "مغامرات",
+    "meetups": "فعاليات",
+    "photowalk": "تصوير",
+    "tourist": "سياح",
+    "mood": "حالتي",
+    "wellness": "صحتي"
   },
   "community": {
     "title": "مجتمع قالمة",
     "leaderboard": "كبار المساهمين",
     "feedback_title": "تواصل مع فريق التطوير",
     "feedback_success": "تم استلام رسالتك! شكراً لك.",
-    "points": "نقطة"
+    "points": "نقطة",
+    "hero_desc": "قلب GuelmaGuide النابض. تعرف على المساهمين الذين يحافظون على هذا التراث حيا وشارك أفكارك مع فريق التطوير.",
+    "loading": "جاري تحميل المساهمين...",
+    "feedback_desc": "هل لديك أفكار للتحسين؟ وجدت خطأ؟ أو تريد الشراكة معنا؟ خارطة الطريق المبنية على مجتمعنا تعتمد عليك.",
+    "feedback_received": "تم استلام الرسالة!",
+    "feedback_received_desc": "شكرا لمساعدتك في تطوير قالمة. سنراجع ملاحظاتك.",
+    "subject_label": "الموضوع",
+    "subject_placeholder": "مثال: فكرة ميزة جديدة",
+    "message_label": "رسالتك",
+    "message_placeholder": "أخبرنا بما يدور في ذهنك...",
+    "sending": "جاري الإرسال...",
+    "send_feedback": "إرسال الملاحظات",
+    "login_to_send": "سجل الدخول لإرسال الملاحظات",
+    "roadmap_title": "خارطة طريق التطوير",
+    "partner_title": "مساحة الشركاء المجتمعيين",
+    "partner_heading": "روج لأعمالك التراثية",
+    "partner_desc": "هل أنت صاحب فندق محلي، حرفي، أو مطعم في قالمة؟ اشترك معنا لتظهر في قوائم الموصى به من المجتمع وتصل إلى آلاف المستكشفين.",
+    "partner_cta": "استفسر عن الإعلانات"
   },
   "home": {
     "welcome": "مرحبا بك في قالمة",
@@ -28,7 +51,8 @@
     "ai_guide_title": "الدليل الذكي",
     "ai_guide_subtitle": "اقترح لي أفضل الأماكن والأنشطة",
     "ai_guide_desc": "استخدم الدليل الذكي للحصول على توصيات سريعة حسب اهتماماتك.",
-    "try_ai": "جرب الدليل الذكي"
+    "try_ai": "جرب الدليل الذكي",
+    "for_you": "من أجلك ✨"
   },
   "discover": {
     "title": "اكتشف الأماكن",
@@ -53,7 +77,39 @@
     "suggest_form_theme": "الثيم",
     "suggest_form_submit": "إرسال الاقتراح",
     "suggest_success": "شكراً لك! تم إرسال اقتراحك للإدارة للمراجعة. ستحصل على نقاط بمجرد الموافقة!",
-    "suggest_login_required": "يجب عليك تسجيل الدخول لاقتراح مكان."
+    "suggest_login_required": "يجب عليك تسجيل الدخول لاقتراح مكان.",
+    "filter_all": "الكل",
+    "filter_forest": "غابة",
+    "filter_culture": "ثقافة/تاريخ",
+    "filter_nature": "طبيعة",
+    "filter_sports": "رياضة",
+    "filter_relaxation": "استرخاء",
+    "filter_thermal_baths": "حمامات معدنية",
+    "lat_label": "خط العرض",
+    "lng_label": "خط الطول",
+    "theme_placeholder": "مثال: فن روماني",
+    "searching": "جاري البحث...",
+    "recent_searches": "عمليات البحث الأخيرة",
+    "clear_all": "مسح الكل",
+    "remove_history_item": "إزالة من السجل",
+    "voice_search": "بحث صوتي",
+    "voice_no_speech": "لم يتم التعرف على صوت، حاول مرة أخرى",
+    "voice_error": "حدث خطأ في التعرف على الصوت",
+    "no_results_title": "لم يتم العثور على نتائج",
+    "no_results_for": "لا توجد نتائج لـ \"{keyword}\"",
+    "no_results_desc": "حاول تعديل معايير البحث أو تصفح الفئات أدناه",
+    "did_you_mean": "هل تقصد؟",
+    "suggested_categories": "الفئات المقترحة",
+    "popular_searches": "عمليات البحث الشائعة",
+    "explore_all": "تصفح الكل",
+    "filters": "تصفية",
+    "clear_filters": "مسح التصفية",
+    "sort_relevance": "الأكثر صلة",
+    "sort_name": "الاسم",
+    "sort_rating": "التقييم",
+    "sort_newest": "الأحدث",
+    "results_count": "{count} نتيجة",
+    "results_count_other": "{count} نتائج"
   },
   "footer": {
     "tagline": "دليل مدينة ذكي لقالمة، الجزائر."
@@ -93,14 +149,16 @@
     "evening": "الليل",
     "all_day": "اليوم كاملاً",
     "btn_recommend": "توصية",
-    "natural_placeholder": "اسأل بشكل طبيعي (مثلاً: 'أين يمكنني الذهاب مع أطفالي هذا المساء؟')",
+    "natural_placeholder": "اسأل بشكل طبيعي (مثلاً: أين يمكنني الذهاب مع أطفالي هذا المساء؟)",
     "thinking": "جاري التفكير...",
     "explanation": "لماذا تم اقتراح هذا؟",
     "ask_btn": "اسأل الدليل",
     "recommendations": "التوصيات",
     "empty": "اختر فلترًا ثم احصل على توصيات.",
     "places": "الأماكن",
-    "activities": "الأنشطة"
+    "activities": "الأنشطة",
+    "error_timeout": "الدليل الذكي يأخذ استراحة. جاري استخدام التوصيات التلقائية...",
+    "empty_desc": "أخبر دليلنا الذكي عما تبحث عنه، أو استخدم الفلاتر السريعة أعلاه للبدء."
   },
   "place_details": {
     "back": "العودة إلى الاكتشاف →",
@@ -158,7 +216,21 @@
     "logout_btn": "تسجيل الخروج",
     "logging_out": "جاري الخروج...",
     "manage_activities": "إدارة الأنشطة",
-    "points": "نقاط المساهمة"
+    "points": "نقاط المساهمة",
+    "verified_badge": "موثق",
+    "points_label": "{points} نقطة",
+    "organiser_pro_label": "منظم محترف",
+    "organiser_pro_desc": "طور فعالياتك",
+    "status_active": "الحالة: نشط",
+    "benefits_until": "المزايا صالحة حتى {date}",
+    "view_insights": "عرض التحليلات",
+    "manage_subscription": "إدارة الاشتراك",
+    "upgrade_pro_desc": "احصل على أنشطة غير محدودة، ظهور أولوي وتحليلات متقدمة.",
+    "upgrade_pro": "الترقية إلى محترف",
+    "my_activities_link": "أنشطتي",
+    "my_activities_desc": "التذاكر والتسجيلات",
+    "manage_events_link": "إدارة الفعاليات",
+    "manage_events_desc": "أنشئ أو عدل أنشطتك"
   },
   "auth": {
     "login": "دخول",
@@ -177,11 +249,15 @@
     "go_to_activities": "اذهب للأنشطة",
     "my_activities": "أنشطتي",
     "register": "إنشاء حساب",
-    "password": "كلمة المرور",
+    "password": "***",
     "sign_in": "دخول",
     "create_account": "تسجيل",
     "continue_with_google": "المتابعة باستخدام Google",
-    "session_expired": "انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    "session_expired": "انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+    "email_placeholder": "email@example.com",
+    "or": "أو",
+    "google_not_configured": "تسجيل الدخول عبر Google غير متاح حالياً. قم بتعيين بيانات الاعتماد في ملف .env",
+    "google_connect_error": "تعذر الاتصال بخادم المصادقة"
   },
   "notifications": {
     "title": "الإشعارات",
@@ -218,19 +294,30 @@
       "date": "التاريخ"
     },
     "users": {
-        "search": "بحث عن مستخدمين...",
-        "promote": "ترقية لمنظم",
-        "verified": "موثق",
-        "role": "الدور",
-        "joined": "تاريخ الانضمام"
+      "search": "بحث عن مستخدمين...",
+      "promote": "ترقية لمنظم",
+      "verified": "موثق",
+      "role": "الدور",
+      "joined": "تاريخ الانضمام",
+      "user": "المستخدم"
     },
     "stats": {
-        "header": "نظرة عامة",
-        "total_users": "إجمالي المستخدمين",
-        "total_places": "إجمالي الأماكن",
-        "total_activities": "إجمالي الأنشطة",
-        "this_month": "جديد هذا الشهر"
-    }
+      "header": "نظرة عامة",
+      "total_users": "إجمالي المستخدمين",
+      "total_places": "إجمالي الأماكن",
+      "total_activities": "إجمالي الأنشطة",
+      "this_month": "جديد هذا الشهر"
+    },
+    "subtitle": "إدارة المنصة والعمليات",
+    "pending_activities_heading": "الأنشطة قيد الانتظار",
+    "pending_places_heading": "اقتراحات الأماكن قيد الانتظار",
+    "no_pending_places": "لا توجد اقتراحات أماكن قيد الانتظار",
+    "by_label": "بواسطة: {name}",
+    "search_places": "بحث عن أماكن...",
+    "coming_soon": "قريباً",
+    "reported_desc": "إدارة المحتوى المبلغ عنه قيد التطوير حالياً.",
+    "manage_photos": "إدارة الصور",
+    "cloudflare_r2_badge": "Cloudflare R2"
   },
   "onboarding": {
     "step_language": "اختر لغتك",
@@ -255,5 +342,432 @@
   },
   "search": {
     "placeholder": "بحث"
+  },
+  "organiser_pro": {
+    "badge": "Elite Program",
+    "title": "Dominate the Guide as a Pro Organiser",
+    "subtitle": "Get more visibility, insights, and zero limits to grow your events in Guelma.",
+    "pricing_title": "Pro Membership",
+    "month": "month",
+    "button_upgrade": "Upgrade to Pro Now",
+    "button_loading": "Processing...",
+    "button_already_pro": "Pro Active",
+    "cancel_anytime": "Cancel anytime in Stripe",
+    "support_text": "By joining Pro, you help us keep GuelmaGuide free for all users and support local community growth.",
+    "feature_limit_title": "Unlimited Activities",
+    "feature_limit_desc": "Create as many events as you want every month.",
+    "feature_limit_free": "3/month",
+    "feature_priority_title": "Priority Placement",
+    "feature_priority_desc": "Your activities appear first in search results and discover pages.",
+    "feature_analytics_title": "Full Analytics",
+    "feature_analytics_desc": "Track views, joins, and conversion rates for every event you host.",
+    "feature_badge_title": "Pro Badge",
+    "feature_badge_desc": "Exclusive crown icon on your profile and activities to build trust."
+  },
+  "organiser_analytics": {
+    "title": "Organiser Insights",
+    "back_to_profile": "Back to Profile",
+    "total_views": "Total Views",
+    "total_registrations": "Registrations",
+    "conversion_rate": "Avg. Conversion",
+    "activity_breakdown": "Activity Breakdown",
+    "no_activities_yet": "Host your first activity to see stats!",
+    "views": "Views",
+    "joins": "Joins",
+    "conversion": "Conv. %",
+    "restricted_title": "Pro Insights Only",
+    "restricted_desc": "Upgrade to Organiser Pro to unlock detailed analytics and priority placement.",
+    "upgrade_cta": "Explore Pro Features",
+    "pro_badge": "PRO Organiser",
+    "active_membership": "Active membership",
+    "id_label": "ID: {id}"
+  },
+  "error_boundary": {
+    "title": "حدث خطأ غير متوقع",
+    "description": "واجهنا خطأ غير متوقع. لا تقلق، تم إبلاغ الفريق وسنقوم بمراجعته.",
+    "retry": "حاول مرة أخرى"
+  },
+  "pwa": {
+    "title": "أضف إلى الشاشة الرئيسية",
+    "description": "قم بتثبيت GuelmaGuide لتجربة أسرع دون اتصال.",
+    "install": "تثبيت الآن"
+  },
+  "offline": {
+    "title": "أنت غير متصل",
+    "description": "لم نتمكن من الاتصال بالإنترنت، ولكن هذا ما حفظناه لك.",
+    "recently_visited": "تمت الزيارة مؤخراً",
+    "try_homepage": "جرب الصفحة الرئيسية"
+  },
+  "wishlist": {
+    "login": "تسجيل الدخول",
+    "back_to_discover": "العودة إلى الاكتشاف",
+    "saved_count": "{count} {count, plural, one {مكان} other {أماكن}} محفوظة",
+    "empty": "لا توجد أماكن محفوظة بعد",
+    "empty_desc": "ابدأ الاستكشاف واحفظ الأماكن التي تحبها!",
+    "explore_places": "استكشف الأماكن"
+  },
+  "metadata": {
+    "home_title": "GuelmaGuide | دليل قالمة الذكي",
+    "home_desc": "استكشف أفضل الأماكن والأنشطة في قالمة. دليل سياحي ذكي يدمج بين التراث والطبيعة والمجتمع.",
+    "discover_title": "اكتشف الأماكن في قالمة | GuelmaGuide",
+    "discover_search_title": "بحث: {keyword} | اكتشف | GuelmaGuide",
+    "discover_desc": "ابحث وتصفح المعالم الطبيعية والثقافية في قالمة. فلتر حسب الفئة والموضوع.",
+    "activities_title": "الأنشطة المجتمعية في قالمة | GuelmaGuide",
+    "activities_desc": "انضم إلى الأنشطة المحلية: نزهات، ورشات عمل، جولات سياحية في قالمة.",
+    "community_title": "التطور والمجتمع | GuelmaGuide",
+    "community_desc": "انضم إلى الفريق الذي يبني مستقبل التراث الرقمي لقالمة. تعرف على المساهمين البارزين.",
+    "organiser_pro_title": "عضوية برو للمنظمين | GuelmaGuide",
+    "organiser_pro_desc": "احصل على مميزات غير محدودة وتحليلات متقدمة لأنشطتك في قالمة.",
+    "place_not_found": "المكان غير موجود | GuelmaGuide"
+  },
+  "mood": {
+    "title": {
+      "ar": "كيف حالك اليوم؟",
+      "en": "How are you today?",
+      "fr": "Comment allez-vous aujourd'hui ?"
+    },
+    "subtitle": {
+      "ar": "اختر حالتك المزاجية وسنقترح لك ما يناسبك",
+      "en": "Choose your mood and we'll suggest what fits",
+      "fr": "Choisissez votre humeur et nous vous suggérerons l'adéquat"
+    },
+    "suggestions_for_you": {
+      "ar": "اقتراحات لك",
+      "en": "Suggestions for you",
+      "fr": "Suggestions pour vous"
+    },
+    "error_loading": {
+      "ar": "حدث خطأ، حاول مرة أخرى",
+      "en": "Error occurred, try again",
+      "fr": "Erreur, réessayez"
+    },
+    "no_results": {
+      "ar": "لا توجد اقتراحات لهذه الحالة بعد",
+      "en": "No suggestions for this mood yet",
+      "fr": "Pas encore de suggestions pour cette humeur"
+    },
+    "browse_all": {
+      "ar": "تصفح الكل",
+      "en": "Browse all",
+      "fr": "Tout parcourir"
+    },
+    "moods": {
+      "stressed": {
+        "ar": "متوتر",
+        "en": "Stressed",
+        "fr": "Stressé"
+      },
+      "bored": {
+        "ar": "مملل",
+        "en": "Bored",
+        "fr": "Ennui"
+      },
+      "lonely": {
+        "ar": "وحيد",
+        "en": "Lonely",
+        "fr": "Solitaire"
+      },
+      "adventurous": {
+        "ar": "مغامر",
+        "en": "Adventurous",
+        "fr": "Aventureux"
+      },
+      "peaceful": {
+        "ar": "أبحث عن هدوء",
+        "en": "Peaceful",
+        "fr": "Calme"
+      },
+      "family": {
+        "ar": "عائلي",
+        "en": "Family",
+        "fr": "Familial"
+      },
+      "nature": {
+        "ar": "طبيعة",
+        "en": "Nature",
+        "fr": "Nature"
+      },
+      "romantic": {
+        "ar": "رومانسي",
+        "en": "Romantic",
+        "fr": "Romantique"
+      }
+    }
+  },
+  "meetups": {
+    "title": {
+      "ar": "الفعاليات الجماعية",
+      "en": "Group Events",
+      "fr": "Événements de groupe"
+    },
+    "subtitle": {
+      "ar": "انضم إلى أشخاص يشاركونك نفس الاهتمامات",
+      "en": "Join people who share your interests",
+      "fr": "Rejoignez des personnes qui partagent vos intérêts"
+    },
+    "create": {
+      "ar": "إنشاء",
+      "en": "Create",
+      "fr": "Créer"
+    },
+    "join": {
+      "ar": "انضم",
+      "en": "Join",
+      "fr": "Rejoindre"
+    },
+    "joined": {
+      "ar": "منضم ✓",
+      "en": "Joined ✓",
+      "fr": "Inscrit ✓"
+    },
+    "no_meetups": {
+      "ar": "لا توجد فعاليات حالياً",
+      "en": "No events currently",
+      "fr": "Aucun événement pour le moment"
+    },
+    "be_first": {
+      "ar": "كن أول من ينشئ!",
+      "en": "Be the first to create one!",
+      "fr": "Soyez le premier à en créer un !"
+    },
+    "filters": {
+      "all": {
+        "ar": "الكل",
+        "en": "All",
+        "fr": "Tous"
+      },
+      "today": {
+        "ar": "اليوم",
+        "en": "Today",
+        "fr": "Aujourd'hui"
+      },
+      "this_week": {
+        "ar": "هذا الأسبوع",
+        "en": "This week",
+        "fr": "Cette semaine"
+      },
+      "hiking": {
+        "ar": "مشي",
+        "en": "Hiking",
+        "fr": "Randonnée"
+      },
+      "social": {
+        "ar": "اجتماعي",
+        "en": "Social",
+        "fr": "Social"
+      },
+      "wellness": {
+        "ar": "صحة",
+        "en": "Wellness",
+        "fr": "Bien-être"
+      }
+    }
+  },
+  "explore": {
+    "title": {
+      "ar": "مغامرات صغيرة",
+      "en": "Micro-Adventures",
+      "fr": "Micro-aventures"
+    },
+    "subtitle": {
+      "ar": "اكتشف قالمة بطريقة مفاجئة",
+      "en": "Discover Guelma in a surprising way",
+      "fr": "Découvrez Guelma de manière surprenante"
+    },
+    "surprise_me": {
+      "ar": "فاجئني!",
+      "en": "Surprise me!",
+      "fr": "Surprends-moi !"
+    },
+    "minutes": {
+      "ar": "دقائق",
+      "en": "min",
+      "fr": "min"
+    },
+    "steps": {
+      "ar": "الخطوات",
+      "en": "Steps",
+      "fr": "Étapes"
+    },
+    "view_place": {
+      "ar": "عرض المكان",
+      "en": "View place",
+      "fr": "Voir le lieu"
+    },
+    "difficulty": {
+      "easy": {
+        "ar": "سهل",
+        "en": "Easy",
+        "fr": "Facile"
+      },
+      "medium": {
+        "ar": "متوسط",
+        "en": "Medium",
+        "fr": "Moyen"
+      },
+      "hard": {
+        "ar": "صعب",
+        "en": "Hard",
+        "fr": "Difficile"
+      }
+    }
+  },
+  "photowalk": {
+    "title": {
+      "ar": "تحدي التصوير",
+      "en": "Photo Challenge",
+      "fr": "Défi Photo"
+    },
+    "weekly_challenge": {
+      "ar": "التحدي الأسبوعي",
+      "en": "Weekly Challenge",
+      "fr": "Défi Hebdomadaire"
+    },
+    "days_left": {
+      "ar": "يوم متبقي",
+      "en": "days left",
+      "fr": "jours restants"
+    },
+    "submissions": {
+      "ar": "المشاركات",
+      "en": "Submissions",
+      "fr": "Soumissions"
+    },
+    "reward": {
+      "ar": "الجائزة",
+      "en": "Reward",
+      "fr": "Récompense"
+    },
+    "submit_photo": {
+      "ar": "رفع صورة",
+      "en": "Upload photo",
+      "fr": "Téléverser une photo"
+    },
+    "gallery": {
+      "ar": "المعرض",
+      "en": "Gallery",
+      "fr": "Galerie"
+    }
+  },
+  "wellness": {
+    "title": {
+      "ar": "لحظة صحتك",
+      "en": "Your Wellness Moment",
+      "fr": "Ton moment bien-être"
+    },
+    "subtitle": {
+      "ar": "لحظات يومية للاسترخاء والتوازن",
+      "en": "Daily moments for relaxation and balance",
+      "fr": "Moments quotidiens de relaxation"
+    },
+    "duration": {
+      "ar": "المدة",
+      "en": "Duration",
+      "fr": "Durée"
+    },
+    "start": {
+      "ar": "ابدأ",
+      "en": "Start",
+      "fr": "Commencer"
+    },
+    "pause": {
+      "ar": "إيقاف مؤقت",
+      "en": "Pause",
+      "fr": "Pause"
+    },
+    "instructions": {
+      "ar": "التعليمات",
+      "en": "Instructions",
+      "fr": "Instructions"
+    },
+    "next_tip": {
+      "ar": "النصيحة التالية",
+      "en": "Next tip",
+      "fr": "Conseil suivant"
+    },
+    "types": {
+      "breathing": {
+        "ar": "تنفس",
+        "en": "Breathing",
+        "fr": "Respiration"
+      },
+      "meditation": {
+        "ar": "تأمل",
+        "en": "Meditation",
+        "fr": "Méditation"
+      },
+      "stretching": {
+        "ar": "تمديد",
+        "en": "Stretching",
+        "fr": "Étirement"
+      },
+      "gratitude": {
+        "ar": "امتنان",
+        "en": "Gratitude",
+        "fr": "Gratitude"
+      },
+      "mindfulness": {
+        "ar": "وعي",
+        "en": "Mindfulness",
+        "fr": "Pleine conscience"
+      },
+      "hydration": {
+        "ar": "ترطيب",
+        "en": "Hydration",
+        "fr": "Hydratation"
+      }
+    }
+  },
+  "tourist": {
+    "title": {
+      "ar": "اسأل المحلي",
+      "en": "Ask a Local",
+      "fr": "Demander à un Local"
+    },
+    "subtitle": {
+      "ar": "تواصل مع السكان المحليين والسياح",
+      "en": "Connect with locals and fellow tourists",
+      "fr": "Connectez-vous avec les locaux et autres touristes"
+    },
+    "be_my_local": {
+      "ar": "كن مرشدي المحلي",
+      "en": "Be My Local Guide",
+      "fr": "Sois Mon Guide Local"
+    },
+    "be_my_local_desc": {
+      "ar": "شارك وقتك مع سائح يريد اكتشاف قالمة!",
+      "en": "Offer your time to a tourist wanting to discover Guelma!",
+      "fr": "Offrez votre temps à un touriste qui veut découvrir Guelma !"
+    },
+    "offer_time": {
+      "ar": "عرض وقتي",
+      "en": "Offer my time",
+      "fr": "Offrir mon temps"
+    },
+    "ask_local": {
+      "ar": "الأسئلة و الأجوبة",
+      "en": "Q&A",
+      "fr": "Questions & Réponses"
+    },
+    "ask_placeholder": {
+      "ar": "اكتب سؤالك هنا...",
+      "en": "Write your question here...",
+      "fr": "Écrivez votre question ici..."
+    },
+    "ask": {
+      "ar": "إرسال",
+      "en": "Send",
+      "fr": "Envoyer"
+    },
+    "local": {
+      "ar": "محلي",
+      "en": "Local",
+      "fr": "Local"
+    },
+    "best": {
+      "ar": "أفضل إجابة",
+      "en": "Best",
+      "fr": "Meilleure"
+    }
   }
 }

@@ -1,11 +1,13 @@
 import { type Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { serverGetActivities } from '@/lib/server-api'
 import ActivitiesClient from '@/components/ActivitiesClient'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
-  const title = 'Community Activities in Guelma | GuelmaGuide'
-  const description = 'Join local events, guided heritage tours, and nature hikes in Guelma. Connect with the community and explore the city together.'
+  const t = await getTranslations({ locale, namespace: 'metadata' })
+  const title = t('activities_title')
+  const description = t('activities_desc')
 
   return {
     title,

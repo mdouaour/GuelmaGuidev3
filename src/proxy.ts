@@ -6,7 +6,8 @@ const locales = ['en', 'ar', 'fr'];
 
 const intlMiddleware = createMiddleware({
   locales,
-  defaultLocale: 'en'
+  defaultLocale: 'ar',
+  localeDetection: true,
 });
 
 export function proxy(request: NextRequest) {
@@ -18,7 +19,10 @@ export function proxy(request: NextRequest) {
   
   // Ensure we have a CSRF token cookie even for visitors
   if (!hasCsrf) {
-    const token = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+    // Use Web Crypto API (available in Edge runtime) for cryptographically secure token
+    const array = new Uint8Array(32)
+    crypto.getRandomValues(array)
+    const token = Array.from(array).map((b) => b.toString(16).padStart(2, '0')).join('')
     response.cookies.set(CSRF_COOKIE, token, {
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
@@ -34,7 +38,7 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Apply to pages where the visitor might start their session
-    // We skip api, _next, and static assets
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    // We skip api, _next, offline, and static assets
+    '/((?!api|_next/static|_next/image|favicon.ico|offline).*)',
   ],
 }

@@ -44,7 +44,14 @@ export default function OnboardingPage() {
   const router = useRouter()
   const pathname = usePathname()
   
-  const [step, setStep] = useState(1)
+  // Preserve step across locale changes via query param
+  const [step, setStep] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stepParam = new URLSearchParams(window.location.search).get('step')
+      return stepParam ? Number(stepParam) : 1
+    }
+    return 1
+  })
   const [selectedInterests, setSelectedInterests] = useState<string[]>([])
   const [locationPermission, setLocationPermission] = useState<'pending' | 'granted' | 'denied'>('pending')
   const [userLocation, setUserLocation] = useState(GUELMA_COORDS)
@@ -59,8 +66,10 @@ export default function OnboardingPage() {
 
   const handleLanguageSelect = (newLocale: string) => {
     localStorage.setItem('preferred_language', newLocale)
-    // Redirecting to the same page but with new locale
-    router.replace('/onboarding', { locale: newLocale })
+    if (newLocale !== locale) {
+      // Redirect to the onboarding page in the new locale, preserving current step
+      router.replace(`/onboarding?step=${step + 1}`, { locale: newLocale })
+    }
     setStep(2)
   }
 
