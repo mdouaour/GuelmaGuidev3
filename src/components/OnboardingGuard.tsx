@@ -23,7 +23,11 @@ export default function OnboardingGuard({ children }: { children: React.ReactNod
   }, [pathname, router])
 
   if (!shouldRender) {
-    return null // or a loading splash screen
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    )
   }
 
   return <>{children}</>

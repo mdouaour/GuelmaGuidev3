@@ -35,7 +35,7 @@ const config: NextConfig = {
         { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self)' },
         { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
-        { key: 'Content-Security-Policy', value: "default-src 'self'; img-src 'self' https://images.unsplash.com https://upload.wikimedia.org https://*.tile.openstreetmap.org data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self';" },
+        { key: 'Content-Security-Policy', value: "default-src 'self'; img-src 'self' https://images.unsplash.com https://upload.wikimedia.org https://*.tile.openstreetmap.org data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; connect-src 'self' https://*.tile.openstreetmap.org; font-src 'self' data:;" },
       ]
     }]
   },

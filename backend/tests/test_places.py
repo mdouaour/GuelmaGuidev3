@@ -59,3 +59,39 @@ def test_places_filtering_and_pagination(client: TestClient, db_session: Session
 def test_places_distance_filter_requires_coordinates(client: TestClient) -> None:
     response = client.get("/api/v1/places", params={"distance": 5})
     assert response.status_code == 422
+
+
+def _register_visitor_and_get_token(client: TestClient) -> str:
+    email = "visitor@example.com"
+    resp = client.post("/api/v1/auth/register", json={"email": email, "password": "VisitorP@ss1"})
+    assert resp.status_code == 201
+    login_resp = client.post("/api/v1/auth/login", json={"email": email, "password": "VisitorP@ss1"})
+    return login_resp.json()["access_token"]
+
+
+def test_create_place_requires_organizer(client: TestClient, db_session: Session) -> None:
+    token = _register_visitor_and_get_token(client)
+    response = client.post(
+        "/api/v1/places",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"name": "My Place", "description": "desc", "latitude": 36.0, "longitude": 7.0, "category": "culture", "theme": "family", "images": []},
+    )
+    assert response.status_code == 403
+
+
+def test_create_place_validates_required_fields(client: TestClient, db_session: Session) -> None:
+    token = _setup_organizer_and_get_token(client, db_session)
+    response = client.post(
+        "/api/v1/places",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"name": "", "description": "desc", "latitude": 36.0, "longitude": 7.0, "category": "culture", "theme": "family", "images": []},
+    )
+    assert response.status_code == 422
+
+
+def test_places_list_returns_empty_for_no_results(client: TestClient) -> None:
+    response = client.get("/api/v1/places", params={"keyword": "nonexistent_xyz_place"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 0
+    assert body["results"] == []

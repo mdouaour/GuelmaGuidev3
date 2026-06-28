@@ -8,6 +8,8 @@ import PWAPrompt from '@/components/PWAPrompt'
 import { AuthProvider } from '@/context/AuthContext'
 import OnboardingGuard from '@/components/OnboardingGuard'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import RegisterSW from '@/components/RegisterSW'
+import ThemeProvider from '@/components/ThemeProvider'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -36,9 +38,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     languages: {
-      'ar-DZ': '/ar',
-      'fr-FR': '/fr',
-      'en-US': '/en',
+      'ar': '/ar',
+      'fr': '/fr',
+      'en': '/en',
     },
   },
   openGraph: {
@@ -87,6 +89,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className={`${inter.variable} ${cairo.variable}`}>
       <body className={`antialiased ${locale === 'ar' ? 'font-cairo' : 'font-inter'}`}>
+        <ThemeProvider>
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <OnboardingGuard>
@@ -97,10 +100,12 @@ export default async function RootLayout({
                 <Footer />
                 <BottomNav />
                 <PWAPrompt />
+                <RegisterSW />
               </ErrorBoundary>
             </OnboardingGuard>
           </AuthProvider>
         </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

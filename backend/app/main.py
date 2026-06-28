@@ -13,6 +13,7 @@ from arq.connections import RedisSettings
 from app.api.router import api_router
 from app.core.config import settings
 from app.core.logging import setup_logging, LoggingMiddleware
+from app.core.security_headers import SecurityHeadersMiddleware
 
 if settings.SENTRY_DSN:
     sentry_sdk.init(
@@ -22,7 +23,7 @@ if settings.SENTRY_DSN:
             FastApiIntegration(),
         ],
         environment=settings.APP_ENV,
-        traces_sample_rate=1.0,
+        traces_sample_rate=0.1 if settings.APP_ENV == "production" else 1.0,
     )
 
 setup_logging()
@@ -49,6 +50,7 @@ app = FastAPI(
 
 app.add_middleware(SessionMiddleware, secret_key=settings.JWT_SECRET_KEY)
 app.add_middleware(LoggingMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(

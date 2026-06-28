@@ -1,41 +1,28 @@
-import Link from 'next/link'
-import Image from 'next/image'
+'use client'
+
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
 export default function NotFound() {
+  const t = useTranslations('not_found')
+
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
-      <div className="relative mb-8 h-48 w-48 opacity-80">
-        <Image
-          src="https://picsum.photos/seed/guelma_404/400/400"
-          alt="Not found"
-          fill
-          className="rounded-3xl object-cover"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-3xl">
-          <span className="text-6xl font-black text-white drop-shadow-lg">404</span>
-        </div>
+    <div className="flex min-h-[60vh] flex-col items-center justify-center p-6 text-center">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-10 w-10">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 11.625l2.25-2.25M12 11.625l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+        </svg>
       </div>
-      
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Page Not Found</h1>
-      <p className="mt-4 max-w-lg text-lg text-slate-600">
-        The hidden thermal baths of Guelma are beautiful, but this page seems to be lost in the forest.
+      <h1 className="text-4xl font-black text-foreground">404</h1>
+      <p className="mt-2 text-muted">
+        {t('description')}
       </p>
-      
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-        <Link
-          href="/discover"
-          className="rounded-xl bg-[#2E7D32] px-8 py-3.5 text-base font-semibold text-white shadow-md transition-all hover:bg-[#1B5E20] hover:scale-[1.02]"
-        >
-          Discover Places
-        </Link>
-        <Link
-          href="/"
-          className="rounded-xl border border-slate-200 bg-white px-8 py-3.5 text-base font-semibold text-slate-600 transition-colors hover:bg-slate-50"
-        >
-          Back Home
-        </Link>
-      </div>
+      <Link
+        href="/"
+        className="mt-6 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+      >
+        {t('home')}
+      </Link>
     </div>
   )
 }

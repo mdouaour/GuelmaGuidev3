@@ -5,17 +5,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locales = ['en', 'ar', 'fr']
   const publicUrl = 'https://guelma.guide'
 
-  // Static routes
-  const staticRoutes = ['', '/discover', '/activities']
+  const staticRoutes = [
+    { path: '', priority: 1, changefreq: 'daily' as const },
+    { path: '/discover', priority: 0.9, changefreq: 'weekly' as const },
+    { path: '/activities', priority: 0.8, changefreq: 'weekly' as const },
+    { path: '/ai', priority: 0.7, changefreq: 'weekly' as const },
+    { path: '/community', priority: 0.7, changefreq: 'weekly' as const },
+    { path: '/explore', priority: 0.6, changefreq: 'weekly' as const },
+    { path: '/mood', priority: 0.5, changefreq: 'weekly' as const },
+    { path: '/tourist', priority: 0.6, changefreq: 'monthly' as const },
+    { path: '/wellness', priority: 0.5, changefreq: 'weekly' as const },
+    { path: '/wishlist', priority: 0.4, changefreq: 'monthly' as const },
+  ]
   const sitemapEntries: MetadataRoute.Sitemap = []
 
   for (const locale of locales) {
     for (const route of staticRoutes) {
       sitemapEntries.push({
-        url: `${publicUrl}/${locale}${route}`,
+        url: `${publicUrl}/${locale}${route.path}`,
         lastModified: new Date(),
-        changeFrequency: route === '' ? 'daily' : 'weekly',
-        priority: route === '' ? 1 : 0.8,
+        changeFrequency: route.changefreq,
+        priority: route.priority,
       })
     }
   }

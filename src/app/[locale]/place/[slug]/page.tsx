@@ -26,6 +26,8 @@ async function getPlaceData(slug: string, locale: string) {
       place = placeResults.results[0]
     }
 
+    if (!place?.id) return null
+
     const activitiesResponse = await serverGetActivities(
       new URLSearchParams({ place: String(place.id), page: '1', limit: '6', availability: 'true' }),
       locale
@@ -33,7 +35,7 @@ async function getPlaceData(slug: string, locale: string) {
 
     return {
       place,
-      activities: activitiesResponse.results
+      activities: activitiesResponse?.results ?? []
     }
   } catch (error) {
     console.error('Error fetching place data:', error)
@@ -53,8 +55,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${data.place.name} | GuelmaGuide`
-  const description = data.place.description.slice(0, 160)
-  const image = data.place.images.length > 0 ? data.place.images[0] : '/og-image.png'
+  const description = data.place.description?.slice(0, 160) ?? ''
+  const image = data.place.images?.length > 0 ? data.place.images[0] : '/og-image.png'
 
   return {
     title,

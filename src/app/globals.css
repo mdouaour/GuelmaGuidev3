@@ -6,6 +6,22 @@
   --primary: #2e7d32;
   --accent: #4fc3f7;
   --highlight: #ff7043;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(46, 125, 50, 0.14);
+  --muted: #64748b;
+  --subtle: #f1f5f9;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --primary: #4ade80;
+  --accent: #38bdf8;
+  --highlight: #fb923c;
+  --card-bg: rgba(30, 41, 59, 0.9);
+  --card-border: rgba(74, 222, 128, 0.14);
+  --muted: #94a3b8;
+  --subtle: #1e293b;
 }
 
 @theme inline {
@@ -14,6 +30,10 @@
   --color-primary: var(--primary);
   --color-accent: var(--accent);
   --color-highlight: var(--highlight);
+  --color-muted: var(--muted);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-subtle: var(--subtle);
   --font-inter: var(--font-inter);
   --font-cairo: var(--font-cairo);
 }
@@ -33,10 +53,10 @@ main {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--card-border);
 }
 
 .glass-gold {
@@ -44,6 +64,11 @@ main {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(15, 118, 110, 0.3);
+}
+
+.dark .glass-gold {
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
 .gold-gradient {
@@ -65,7 +90,7 @@ main {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #dce5e1;
+  background: var(--subtle);
 }
 ::-webkit-scrollbar-thumb {
   background: #2e7d32;
@@ -74,8 +99,8 @@ main {
 
 .tour-card {
   border-radius: 1rem;
-  border: 1px solid rgba(46, 125, 50, 0.14);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
   box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
 }
 

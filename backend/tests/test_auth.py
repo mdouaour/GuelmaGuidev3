@@ -47,6 +47,22 @@ def test_register_duplicate_email_returns_400(client: TestClient) -> None:
     assert duplicate.status_code == 400
 
 
+def test_register_weak_password_returns_422(client: TestClient) -> None:
+    """Registration with a weak password (zxcvbn score < 2) must be rejected with 422."""
+    weak_passwords = [
+        ("password", "too common"),
+        ("12345678", "too common"),
+        ("abc", "too short and weak"),
+        ("aaaaaaaa", "repeating pattern"),
+    ]
+    for pwd, _reason in weak_passwords:
+        response = client.post(
+            "/api/v1/auth/register",
+            json={"email": "weak@example.com", "password": pwd},
+        )
+        assert response.status_code == 422, f"Expected 422 for password '{pwd}'"
+
+
 def test_login_with_wrong_password_returns_401(client: TestClient) -> None:
     with patch("app.api.auth.send_verification_email"):
         client.post(

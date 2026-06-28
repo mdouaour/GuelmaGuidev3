@@ -3,8 +3,9 @@
 import { useEffect } from 'react'
 import * as Sentry from '@sentry/nextjs'
 import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
-export default function Error({
+export default function PlaceError({
   error,
   reset,
 }: {
@@ -25,15 +26,21 @@ export default function Error({
         </svg>
       </div>
       <h2 className="text-2xl font-bold text-foreground">{t('title')}</h2>
-      <p className="mt-2 max-w-md text-muted">
-        {t('description')}
-      </p>
-      <button
-        onClick={reset}
-        className="mt-6 rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-      >
-        {t('retry')}
-      </button>
+      <p className="mt-2 max-w-md text-muted">{t('description')}</p>
+      <div className="mt-6 flex gap-3">
+        <button
+          onClick={reset}
+          className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+        >
+          {t('retry')}
+        </button>
+        <Link
+          href="/discover"
+          className="rounded-xl border border-emerald-200 dark:border-emerald-800 px-6 py-2.5 text-sm font-semibold text-foreground transition-opacity hover:opacity-90"
+        >
+          {t('back')}
+        </Link>
+      </div>
     </div>
   )
 }
